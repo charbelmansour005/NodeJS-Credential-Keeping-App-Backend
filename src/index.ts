@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv"
+dotenv.config()
 import express, {
   Request,
   Response,
@@ -8,8 +10,8 @@ import express, {
 } from "express"
 import { connect, set } from "mongoose"
 import cors from "cors"
+import authRoutes from "./routes/auth.routes.js"
 var PORT = 5400
-var MONGODB_URI = "mongodb://localhost:27017"
 
 export interface ErrorResponse extends Error {
   status: number
@@ -18,10 +20,11 @@ export interface ErrorResponse extends Error {
 
 const app: Express = express()
 
-app.use(cors())
-
-app.use(urlencoded({ extended: false }))
 app.use(json())
+app.use(cors())
+app.use(urlencoded({ extended: false }))
+
+app.use("/auth", authRoutes)
 
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({ message: "Could not find Endpoint!" })
@@ -40,9 +43,9 @@ const connectMongoDB = async () => {
   try {
     set("strictQuery", false)
     console.log("MongoDB Connected!")
-    await connect(MONGODB_URI)
-    app.listen(PORT)
-    console.log(`listening on port ${PORT}!`)
+    await connect(process.env.DB_URI!)
+    app.listen(process.env.PORT || PORT)
+    console.log(`listening on port ${process.env.PORT || PORT}`)
   } catch (error) {
     console.log(error)
   }

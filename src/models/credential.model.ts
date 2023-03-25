@@ -1,4 +1,4 @@
-import { CredentialModel } from "../types/index.js"
+import { CredentialModel } from "../types/types.js"
 import { Schema, model, Types } from "mongoose"
 
 const credentialSchema = new Schema<CredentialModel>({
