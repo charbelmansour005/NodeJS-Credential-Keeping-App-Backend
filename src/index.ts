@@ -11,7 +11,7 @@ import express, {
 import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
 import credRoutes from "./routes/credentials.routes.js"
-import { connectMongoDB } from "./db/mongoose.js"
+import { connectMongoDB } from "./db/mongoose.db.js"
 var PORT = 5400
 
 export interface ErrorResponse extends Error {

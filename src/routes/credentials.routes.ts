@@ -6,7 +6,7 @@ import {
   deleteUserCred,
   updateUserCredential,
 } from "../controllers/credential.controller.js"
-import { isAuth } from "../middleware/isAuth.js"
+import { isAuth } from "../middleware/isAuth.middleware.js"
 import { Router } from "express"
 
 const router = Router()
