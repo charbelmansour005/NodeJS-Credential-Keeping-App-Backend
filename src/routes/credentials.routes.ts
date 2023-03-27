@@ -1,6 +1,7 @@
 import {
   getCredential,
   getCredentials,
+  getUserCreds,
   addUserCred,
   deleteUserCred,
 } from "../controllers/credential.controller.js"
@@ -9,10 +10,15 @@ import { Router } from "express"
 
 const router = Router()
 
-router.get("/:credId", getCredential)
-router.get("/", getCredentials)
+router.get("/mine", isAuth, getUserCreds)
 
-router.post("/credential", isAuth, addUserCred)
-router.delete("/credential", isAuth, deleteUserCred)
+router
+  .route("/credential")
+  .post(isAuth, addUserCred)
+  .delete(isAuth, deleteUserCred)
+
+// extra routes - unauthenticated - (very bad prone to hacks)
+router.get("/", getCredentials)
+router.get("/:credId", getCredential)
 
 export default router

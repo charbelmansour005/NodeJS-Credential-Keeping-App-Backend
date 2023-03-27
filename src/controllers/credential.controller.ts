@@ -4,34 +4,6 @@ import { CredentialModel } from "../types/types.js"
 import { RequestHandler } from "express"
 import { ErrorResponse } from "../index.js"
 
-export const getCredentials: RequestHandler = async (req, res, next) => {
-  try {
-    const creds = await Credentials.find()
-    return res.status(200).json({ creds: creds })
-  } catch (error) {
-    next(error)
-  }
-}
-
-export const getCredential: RequestHandler = async (req, res, next) => {
-  try {
-    const { credId } = req.params
-    const cred = await Credentials.findById(credId)
-
-    if (!cred) {
-      const error: ErrorResponse = {
-        message: "Credential not found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    }
-    return res.status(200).json({ credential: cred })
-  } catch (error) {
-    next(error)
-  }
-}
-
 export const getUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
@@ -77,8 +49,8 @@ export const addUserCred: RequestHandler = async (req, res, next) => {
     }
 
     const newCredentialSet = await Credentials.create({
-      title,
-      key,
+      title: title,
+      key: key,
       creator: current_user,
     })
 
@@ -120,6 +92,34 @@ export const deleteUserCred: RequestHandler = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: `Order deleted`, deletedCredential: credential })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getCredentials: RequestHandler = async (req, res, next) => {
+  try {
+    const creds = await Credentials.find()
+    return res.status(200).json({ creds: creds })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getCredential: RequestHandler = async (req, res, next) => {
+  try {
+    const { credId } = req.params
+    const cred = await Credentials.findById(credId)
+
+    if (!cred) {
+      const error: ErrorResponse = {
+        message: "Credential not found",
+        name: "Not found",
+        status: 404,
+      }
+      throw error
+    }
+    return res.status(200).json({ credential: cred })
   } catch (error) {
     next(error)
   }
