@@ -8,19 +8,23 @@ const userSchema = new Schema<UserModel>({
     lowercase: true,
     unique: true,
   },
+
   password: {
     type: String,
     required: [true, "Please enter a password"],
     minLength: 13,
   },
+
   firstName: {
     type: String,
     required: [false, "Please enter your first name"],
   },
+
   lastName: {
     type: String,
     required: [false, "Please enter your first name"],
   },
+
   phoneNumber: {
     type: Number,
     required: [false, "Please enter your phone number"],

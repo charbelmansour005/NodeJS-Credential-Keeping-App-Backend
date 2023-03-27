@@ -28,7 +28,7 @@ export const postLogin: RequestHandler = async (req, res, next) => {
       const error: ErrorResponse = {
         status: 401,
         name: "Not found",
-        message: "A user with this email could not be found!",
+        message: "A user with this email could not be found",
       }
       throw error
     }
@@ -44,7 +44,7 @@ export const postLogin: RequestHandler = async (req, res, next) => {
       throw error
     }
 
-    let loadedUser
+    let loadedUser: unknown | any
     loadedUser = user
 
     const token = sign(

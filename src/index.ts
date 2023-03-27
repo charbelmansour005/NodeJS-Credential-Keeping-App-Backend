@@ -8,9 +8,10 @@ import express, {
   json,
   urlencoded,
 } from "express"
-import { connect, set } from "mongoose"
 import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
+import CredRoutes from "./routes/credentials.routes.js"
+import { connectMongoDB } from "./db/mongoose.js"
 var PORT = 5400
 
 export interface ErrorResponse extends Error {
@@ -25,6 +26,7 @@ app.use(cors())
 app.use(urlencoded({ extended: false }))
 
 app.use("/auth", authRoutes)
+app.use("/creds", CredRoutes)
 
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({ message: "Could not find Endpoint!" })
@@ -39,15 +41,6 @@ app.use(
   }
 )
 
-const connectMongoDB = async () => {
-  try {
-    set("strictQuery", false)
-    console.log("MongoDB Connected!")
-    await connect(process.env.DB_URI!)
-    app.listen(process.env.PORT || PORT)
-    console.log(`listening on port ${process.env.PORT || PORT}`)
-  } catch (error) {
-    console.log(error)
-  }
-}
 connectMongoDB()
+app.listen(process.env.PORT || PORT)
+console.log(`listening on port ${process.env.PORT || PORT}`)
