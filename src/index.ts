@@ -10,7 +10,7 @@ import express, {
 } from "express"
 import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
-import CredRoutes from "./routes/credentials.routes.js"
+import credRoutes from "./routes/credentials.routes.js"
 import { connectMongoDB } from "./db/mongoose.js"
 var PORT = 5400
 
@@ -26,7 +26,7 @@ app.use(cors())
 app.use(urlencoded({ extended: false }))
 
 app.use("/auth", authRoutes)
-app.use("/creds", CredRoutes)
+app.use("/api", credRoutes)
 
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({ message: "Could not find Endpoint!" })
@@ -36,7 +36,7 @@ app.use(
   (error: ErrorResponse, req: Request, res: Response, next: NextFunction) => {
     const { message, status, data } = error
     res
-      .status(status)
+      .status(status || 404)
       .json({ message: message || "Internal server issues", data: data })
   }
 )

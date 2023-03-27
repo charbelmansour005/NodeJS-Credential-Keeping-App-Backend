@@ -4,6 +4,7 @@ import {
   getUserCreds,
   addUserCred,
   deleteUserCred,
+  updateUserCredential,
 } from "../controllers/credential.controller.js"
 import { isAuth } from "../middleware/isAuth.js"
 import { Router } from "express"
@@ -11,13 +12,11 @@ import { Router } from "express"
 const router = Router()
 
 router.get("/mine", isAuth, getUserCreds)
+router.route("/credential").post(isAuth, addUserCred)
+router.put("/:credId", isAuth, updateUserCredential)
+router.delete("/:credId", isAuth, deleteUserCred)
 
-router
-  .route("/credential")
-  .post(isAuth, addUserCred)
-  .delete(isAuth, deleteUserCred)
-
-// extra routes - unauthenticated - (very bad prone to hacks)
+// extra routes - (unauthenticated)
 router.get("/", getCredentials)
 router.get("/:credId", getCredential)
 

@@ -13,6 +13,7 @@ type CredentialModel = {
   key: string
   creator: Types.ObjectId | unknown
   created_At: Date
+  updated_At: Date
 }
 
 export type { UserModel, CredentialModel }

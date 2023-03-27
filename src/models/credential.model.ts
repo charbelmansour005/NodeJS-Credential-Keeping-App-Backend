@@ -25,6 +25,13 @@ const credentialSchema = new Schema<CredentialModel>({
     default: Date.now(),
     select: false,
   },
+
+  updated_At: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+    select: false,
+  },
 })
 
 export const Credentials = model("Credentials", credentialSchema)

@@ -69,7 +69,7 @@ export const deleteUserCred: RequestHandler = async (req, res, next) => {
   try {
     const { credId } = req.params
 
-    const credential = await Credentials.findByIdAndRemove(credId)
+    const requestedCredential = await Credentials.findById(credId)
 
     if (!req.userId) {
       const error: ErrorResponse = {
@@ -78,24 +78,86 @@ export const deleteUserCred: RequestHandler = async (req, res, next) => {
         status: 404,
       }
       throw error
-    }
-
-    if (!credential) {
+    } else if (!requestedCredential) {
       const error: ErrorResponse = {
         message: "Credential not found",
         name: "Not found",
         status: 404,
       }
       throw error
+    } else if (
+      requestedCredential?.creator?.toString() !== req.userId.toString()
+    ) {
+      const error: ErrorResponse = {
+        message: "Unauthorized",
+        name: "Unauthorized",
+        status: 401,
+      }
+      throw error
     }
 
-    return res
-      .status(200)
-      .json({ message: `Order deleted`, deletedCredential: credential })
+    const removedCredential = await Credentials.findByIdAndRemove(credId)
+
+    return res.status(200).json({
+      message: `Credential deleted`,
+      deletedCredential: removedCredential,
+    })
   } catch (error) {
     next(error)
   }
 }
+
+export const updateUserCredential: RequestHandler = async (req, res, next) => {
+  try {
+    const { credId } = req.params
+
+    const { title, key } = req.body as CredentialModel
+    const updated_At = new Date()
+
+    const requestedCredential = await Credentials.findById(credId)
+
+    if (!requestedCredential) {
+      const error: ErrorResponse = {
+        message: "Requested credential not found",
+        name: "Not found",
+        status: 404,
+      }
+      throw error
+    } else if (
+      requestedCredential?.creator?.toString() !== req.userId.toString()
+    ) {
+      const error: ErrorResponse = {
+        message: "Unauthorized",
+        name: "Unauthorized",
+        status: 401,
+      }
+      throw error
+    } else if (!title || !key) {
+      const error: ErrorResponse = {
+        message: "Please fill all required fields",
+        name: "Missing fields",
+        status: 404,
+      }
+      throw error
+    }
+
+    requestedCredential.title = title
+    requestedCredential.key = key
+    requestedCredential.updated_At = updated_At
+
+    const result = await requestedCredential.save()
+
+    res.status(200).json({
+      message: `Success! Updated Credential`,
+      updatedTitle: result.title,
+      updatedKey: result.key,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+// unauthorized access
 
 export const getCredentials: RequestHandler = async (req, res, next) => {
   try {
