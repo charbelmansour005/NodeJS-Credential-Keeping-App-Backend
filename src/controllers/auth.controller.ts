@@ -115,7 +115,10 @@ export const changePassword: RequestHandler = async (req, res, next) => {
 
     const hashedPassword = await hash(newPassword, 12)
 
+    const pass_updated_At = new Date()
+
     user.password = hashedPassword
+    user.pass_updated_At = pass_updated_At
     await user.save()
 
     res.status(200).json({ message: "Password changed successfully" })

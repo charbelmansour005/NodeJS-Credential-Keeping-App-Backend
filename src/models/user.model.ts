@@ -35,7 +35,14 @@ const userSchema = new Schema<UserModel>({
     required: [false, "Please enter your phone number"],
   },
 
-  signedUp_at: {
+  signedUp_At: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+    select: false,
+  },
+
+  pass_updated_At: {
     type: Date,
     required: true,
     default: Date.now(),
