@@ -12,8 +12,8 @@ export async function generatePass(current_user: string | unknown) {
     }
     throw error
   }
-  const requestedPassword = uuidv4()
+  const generatedPassword = uuidv4()
   return {
-    requestedPassword,
+    generatedPassword,
   }
 }

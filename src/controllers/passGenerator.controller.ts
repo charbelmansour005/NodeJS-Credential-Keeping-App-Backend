@@ -3,9 +3,9 @@ import { generatePass } from "../services/passwordGenerator.service.js"
 
 export const requestPassword: RequestHandler = async (req, res, next) => {
   try {
-    const generatedPassword = await generatePass(req.userId)
+    const result = await generatePass(req.userId)
 
-    res.status(200).json({ password: generatedPassword })
+    res.status(200).json(result)
   } catch (error) {
     next(error)
   }
