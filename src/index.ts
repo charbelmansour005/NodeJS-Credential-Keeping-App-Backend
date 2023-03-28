@@ -45,4 +45,4 @@ app.use(
 
 connectMongoDB()
 app.listen(process.env.PORT || PORT)
-console.log(`listening on port ${process.env.PORT || PORT}`)
+console.log(`Listening on port ${process.env.PORT || PORT}`)

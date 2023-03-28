@@ -13,9 +13,9 @@ export const filterUserCreds: RequestHandler = async (req, res, next) => {
     const current_user = req.userId
     const { title } = req.query
 
-    const result = await filterCreds(current_user, title)
+    const queryResults = await filterCreds(current_user, title)
 
-    res.status(200).json(result)
+    res.status(200).json(queryResults)
   } catch (error) {
     next(error)
   }
