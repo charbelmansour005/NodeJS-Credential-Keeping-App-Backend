@@ -1,16 +1,11 @@
-import { ErrorResponse } from "../index.js"
 import { Credentials } from "../models/credential.model.js"
+import { createError } from "../utils/errorUtils.js"
 
 export async function getCredentialunAuth(credId: string): Promise<{}> {
   const result = await Credentials.findOne({ _id: credId })
 
   if (!result) {
-    const error: ErrorResponse = {
-      message: "Credential not found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(404, "Not found", "Credential not found")
   }
 
   return {
