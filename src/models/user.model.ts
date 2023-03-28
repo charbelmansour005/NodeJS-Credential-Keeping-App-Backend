@@ -20,11 +20,6 @@ const userSchema = new Schema<UserModel>({
     required: [false, "Please enter your first name"],
   },
 
-  logoutAll: {
-    type: Boolean,
-    required: false,
-  },
-
   lastName: {
     type: String,
     required: [false, "Please enter your first name"],
@@ -42,11 +37,23 @@ const userSchema = new Schema<UserModel>({
     select: false,
   },
 
+  logoutAll: {
+    type: Boolean,
+    required: false,
+  },
+
   pass_updated_At: {
     type: Date,
     required: true,
     default: Date.now(),
     select: false,
+  },
+
+  role: {
+    type: String,
+    default: "user",
+    required: true,
+    enum: ["user", "admin"],
   },
 })
 
