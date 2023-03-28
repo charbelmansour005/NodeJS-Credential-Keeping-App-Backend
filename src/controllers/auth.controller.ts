@@ -2,20 +2,21 @@ import { RequestHandler } from "express"
 import { UserModel } from "../types/types.js"
 import { User } from "../models/user.model.js"
 import bcryptjs from "bcryptjs"
-import jsonwebtoken from "jsonwebtoken"
+import jsonwebtoken, { JwtPayload } from "jsonwebtoken"
 import nodemailer from "nodemailer"
 import { createError } from "../utils/errorUtils.js"
+import { changePass } from "../services/changePass.service.js"
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.USER,
-    pass: process.env.PASS,
+    user: "charbelmansour005@gmail.com",
+    pass: "encxvodkkuczlxdv",
   },
 })
 
 const { hash, compare } = bcryptjs
-const { sign } = jsonwebtoken
+const { sign, verify } = jsonwebtoken
 
 export const postLogin: RequestHandler = async (req, res, next) => {
   try {
@@ -46,6 +47,7 @@ export const postLogin: RequestHandler = async (req, res, next) => {
       {
         email: loadedUser.email,
         userId: loadedUser._id.toString(),
+        role: loadedUser.role.toString(),
       },
       process.env.SECRET,
       { expiresIn: "1h" }
@@ -60,47 +62,48 @@ export const postLogin: RequestHandler = async (req, res, next) => {
 export const changePassword: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
-    const { email, password, newPassword } = req.body as UserModel
+    // const { email, password, newPassword } = req.body as UserModel
+    const userBody = req.body as UserModel
+    await changePass(current_user, userBody)
+    // if (!current_user) {
+    //   throw createError(401, "Unauthorized", "Please sign in first")
+    // }
 
-    if (!current_user) {
-      throw createError(401, "Unauthorized", "Please sign in first")
-    }
+    // if (!email || !password || !newPassword) {
+    //   throw createError(
+    //     404,
+    //     "Missing fields",
+    //     "Please provide all necessary credentials to change your password"
+    //   )
+    // }
 
-    if (!email || !password || !newPassword) {
-      throw createError(
-        404,
-        "Missing fields",
-        "Please provide all necessary credentials to change your password"
-      )
-    }
+    // const user = await User.findOneAndUpdate(
+    //   { _id: current_user, email: email },
+    //   { logoutAll: true },
+    //   { new: true }
+    // )
 
-    const user = await User.findOneAndUpdate(
-      { _id: current_user, email: email },
-      { logoutAll: true },
-      { new: true }
-    )
+    // if (!user) {
+    //   throw createError(
+    //     401,
+    //     "Unauthorized",
+    //     "Could not find a user with your identity in our database"
+    //   )
+    // }
 
-    if (!user) {
-      throw createError(
-        401,
-        "Unauthorized",
-        "Could not find a user with your identity in our database"
-      )
-    }
+    // const isEqual = await compare(password, user.password)
 
-    const isEqual = await compare(password, user.password)
+    // if (!isEqual) {
+    //   throw createError(401, "Unauthorized", "Old password is incorrent")
+    // }
 
-    if (!isEqual) {
-      throw createError(401, "Unauthorized", "Old password is incorrent")
-    }
+    // const hashedPassword = await hash(newPassword, 12)
 
-    const hashedPassword = await hash(newPassword, 12)
+    // const pass_updated_At = new Date()
 
-    const pass_updated_At = new Date()
-
-    user.password = hashedPassword
-    user.pass_updated_At = pass_updated_At
-    await user.save()
+    // user.password = hashedPassword
+    // user.pass_updated_At = pass_updated_At
+    // await user.save()
 
     res.status(200).json({ message: "Password changed successfully" })
   } catch (error) {
@@ -131,7 +134,7 @@ export const putSignUp: RequestHandler = async (req, res, next) => {
       throw createError(
         409,
         "Already exists",
-        "A user with this phone number already exists"
+        "A user with this phone number already exists!"
       )
     }
 
@@ -159,6 +162,27 @@ export const putSignUp: RequestHandler = async (req, res, next) => {
       email: result.email,
       phoneNumber: result.phoneNumber,
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getRole: RequestHandler = async (req, res, next) => {
+  try {
+    const authHeader = req.get("Authorization")
+    if (!authHeader) {
+      throw createError(401, "Unauthenticated", "Unauthenticated")
+    }
+    const access_token = authHeader.split(" ")[1]
+    let decodedToken: string | JwtPayload
+    try {
+      decodedToken = verify(access_token, process.env.SECRET as string) as {
+        role: string
+      }
+      res.status(200).json({ role: decodedToken.role })
+    } catch (err) {
+      console.log(err)
+    }
   } catch (error) {
     next(error)
   }
