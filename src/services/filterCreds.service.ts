@@ -1,6 +1,6 @@
 import { Credentials } from "../models/credential.model.js"
-import { ErrorResponse } from "../index.js"
 import { CredentialModel } from "../types/types.js"
+import { createError } from "../utils/errorUtils.js"
 
 export async function filterCreds(
   current_user: string | unknown,
@@ -9,12 +9,7 @@ export async function filterCreds(
   const { title } = credential
 
   if (!current_user) {
-    const error: ErrorResponse = {
-      message: "User not found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(404, "Not found", "User not found")
   }
 
   const filteredCredentials = await Credentials.find({
@@ -23,12 +18,7 @@ export async function filterCreds(
   })
 
   if (filteredCredentials.length === 0) {
-    const error: ErrorResponse = {
-      message: "Requested document could not be found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(404, "Not found", "Requested document could not be found")
   }
 
   return {

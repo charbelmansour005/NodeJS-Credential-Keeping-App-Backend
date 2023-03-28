@@ -1,5 +1,5 @@
-import { ErrorResponse } from "../index.js"
 import { Credentials } from "../models/credential.model.js"
+import { createError } from "../utils/errorUtils.js"
 
 export async function deleteCred(
   credId: string,
@@ -8,28 +8,13 @@ export async function deleteCred(
   const requestedCredential = await Credentials.findById(credId)
 
   if (!current_user) {
-    const error: ErrorResponse = {
-      message: "User not found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(401, "Unauthorized", "Please sign in first")
   } else if (!requestedCredential) {
-    const error: ErrorResponse = {
-      message: "Credential not found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(404, "Not found", "Credential not found")
   } else if (
     requestedCredential?.creator?.toString() !== current_user.toString()
   ) {
-    const error: ErrorResponse = {
-      message: "Unauthorized",
-      name: "Unauthorized",
-      status: 401,
-    }
-    throw error
+    throw createError(401, "Unauthorized", "Unauthorized")
   }
 
   const removedCredential = await Credentials.findByIdAndRemove(credId)

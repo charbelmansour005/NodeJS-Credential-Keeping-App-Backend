@@ -1,6 +1,6 @@
-import { ErrorResponse } from "../index.js"
 import { Credentials } from "../models/credential.model.js"
 import { CredentialModel } from "../types/types.js"
+import { createError } from "../utils/errorUtils.js"
 
 export async function addCred(
   current_user: string | unknown,
@@ -9,21 +9,15 @@ export async function addCred(
   const { title, key } = credential
 
   if (!current_user) {
-    const error: ErrorResponse = {
-      message: "User not found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(401, "Not found", "User not found")
   }
 
   if (!title || !key) {
-    const error: ErrorResponse = {
-      message: "Both a key and a title must be provided",
-      name: "Missing element",
-      status: 404,
-    }
-    throw error
+    throw createError(
+      404,
+      "Missing element",
+      "Both a key and a title must be provided"
+    )
   }
 
   const newCredentialSet = await Credentials.create({
