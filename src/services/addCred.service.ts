@@ -1,12 +1,12 @@
-import { Credentials } from "../models/credential.model.js"
 import { ErrorResponse } from "../index.js"
+import { Credentials } from "../models/credential.model.js"
 import { CredentialModel } from "../types/types.js"
 
-export async function filterCreds(
+export async function addCred(
   current_user: string | unknown,
   credential: CredentialModel
 ) {
-  const { title } = credential
+  const { title, key } = credential
 
   if (!current_user) {
     const error: ErrorResponse = {
@@ -17,19 +17,22 @@ export async function filterCreds(
     throw error
   }
 
-  const result = await Credentials.find({
-    creator: current_user,
-    title: { $regex: title.toString(), $options: "i" },
-  })
-
-  if (result.length === 0) {
+  if (!title || !key) {
     const error: ErrorResponse = {
-      message: "Requested document could not be found",
-      name: "Not found",
+      message: "Both a key and a title must be provided",
+      name: "Missing element",
       status: 404,
     }
     throw error
   }
+
+  const newCredentialSet = await Credentials.create({
+    title: title,
+    key: key,
+    creator: current_user,
+  })
+
+  const result = await newCredentialSet.save()
 
   return {
     result,

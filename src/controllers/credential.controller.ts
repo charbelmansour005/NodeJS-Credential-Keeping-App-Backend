@@ -7,13 +7,14 @@ import { ErrorResponse } from "../index.js"
 import { updateCredential } from "../services/updateCredential.service.js"
 import { getCredentialunAuth } from "../services/getCredentialunAuth.service.js"
 import { filterCreds } from "../services/filterCreds.service.js"
+import { addCred } from "../services/addCred.service.js"
 
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
-    const { title } = req.body as CredentialModel
+    const credential = req.body as CredentialModel
 
-    const result = await filterCreds(current_user, title)
+    const result = await filterCreds(current_user, credential)
 
     res.status(200).json({ searchResults: result })
   } catch (error) {
@@ -43,35 +44,11 @@ export const getUserCreds: RequestHandler = async (req, res, next) => {
 
 export const addUserCred: RequestHandler = async (req, res, next) => {
   try {
-    const { title, key } = req.body as CredentialModel
+    const credential = req.body as CredentialModel
 
     const current_user = await User.findById(req.userId)
 
-    if (!current_user) {
-      const error: ErrorResponse = {
-        message: "User not found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    }
-
-    if (!title || !key) {
-      const error: ErrorResponse = {
-        message: "Both a key and a title must be provided",
-        name: "Missing element",
-        status: 404,
-      }
-      throw error
-    }
-
-    const newCredentialSet = await Credentials.create({
-      title: title,
-      key: key,
-      creator: current_user,
-    })
-
-    const result = await newCredentialSet.save()
+    const result = await addCred(current_user, credential)
 
     res.status(201).json({
       message: "Credential created successfully",
