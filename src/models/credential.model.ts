@@ -10,7 +10,6 @@ const credentialSchema = new Schema<CredentialModel>({
   key: {
     type: String,
     required: [true, "Please enter your key"],
-    minlength: [8, "A secure password must be at least 8 characters"],
   },
 
   creator: {

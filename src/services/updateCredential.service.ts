@@ -7,46 +7,42 @@ export async function updateCredential(
   credId: string,
   credential: CredentialModel
 ): Promise<{ updatedTitle: string; updatedKey: string }> {
-  try {
-    const { title, key } = credential
-    const updated_At = new Date()
+  const { title, key } = credential
+  const updated_At = new Date()
 
-    const requestedCredential = await Credentials.findById(credId)
+  const requestedCredential = await Credentials.findById(credId)
 
-    if (!requestedCredential) {
-      const error: ErrorResponse = {
-        message: "Requested credential not found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    } else if (requestedCredential.creator.toString() !== userId) {
-      const error: ErrorResponse = {
-        message: "Unauthorized",
-        name: "Unauthorized",
-        status: 401,
-      }
-      throw error
-    } else if (!title || !key) {
-      const error: ErrorResponse = {
-        message: "Please fill all required fields",
-        name: "Missing fields",
-        status: 404,
-      }
-      throw error
+  if (!requestedCredential) {
+    const error: ErrorResponse = {
+      message: "Requested credential not found",
+      name: "Not found",
+      status: 404,
     }
-
-    requestedCredential.title = title
-    requestedCredential.key = key
-    requestedCredential.updated_At = updated_At
-
-    const result = await requestedCredential.save()
-
-    return {
-      updatedTitle: result.title,
-      updatedKey: result.key,
+    throw error
+  } else if (requestedCredential.creator.toString() !== userId) {
+    const error: ErrorResponse = {
+      message: "Unauthorized",
+      name: "Unauthorized",
+      status: 401,
     }
-  } catch (error) {
-    console.log(error)
+    throw error
+  } else if (!title || !key) {
+    const error: ErrorResponse = {
+      message: "Please fill all required fields",
+      name: "Missing fields",
+      status: 404,
+    }
+    throw error
+  }
+
+  requestedCredential.title = title
+  requestedCredential.key = key
+  requestedCredential.updated_At = updated_At
+
+  const result = await requestedCredential.save()
+
+  return {
+    updatedTitle: result.title,
+    updatedKey: result.key,
   }
 }

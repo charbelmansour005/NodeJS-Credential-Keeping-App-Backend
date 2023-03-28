@@ -17,12 +17,12 @@ export async function filterCreds(
     throw error
   }
 
-  const result = await Credentials.find({
+  const filteredCredentials = await Credentials.find({
     creator: current_user,
     title: { $regex: title.toString(), $options: "i" },
   })
 
-  if (result.length === 0) {
+  if (filteredCredentials.length === 0) {
     const error: ErrorResponse = {
       message: "Requested document could not be found",
       name: "Not found",
@@ -32,6 +32,6 @@ export async function filterCreds(
   }
 
   return {
-    result,
+    filteredCredentials,
   }
 }

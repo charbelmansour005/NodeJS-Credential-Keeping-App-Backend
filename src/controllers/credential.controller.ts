@@ -1,7 +1,6 @@
 import { Credentials } from "../models/credential.model.js"
 import { CredentialModel } from "../types/types.js"
 import { RequestHandler } from "express"
-// services
 import { updateCredential } from "../services/updateCredential.service.js"
 import { getCredentialunAuth } from "../services/getCredentialunAuth.service.js"
 import { filterCreds } from "../services/filterCreds.service.js"

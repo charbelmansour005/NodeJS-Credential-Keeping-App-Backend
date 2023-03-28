@@ -11,6 +11,7 @@ import express, {
 import cors from "cors"
 import authRoutes from "./routes/auth.routes.js"
 import credRoutes from "./routes/credentials.routes.js"
+import passGeneratorRoutes from "./routes/passGenerator.routes.js"
 import { connectMongoDB } from "./db/mongoose.db.js"
 var PORT = 5400
 
@@ -25,8 +26,9 @@ app.use(json())
 app.use(cors())
 app.use(urlencoded({ extended: false }))
 
-app.use("/auth", authRoutes)
+app.use("/api/auth", authRoutes)
 app.use("/api", credRoutes)
+app.use("/api", passGeneratorRoutes)
 
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({ message: "Could not find Endpoint!" })

@@ -9,7 +9,7 @@ import {
 const router = Router()
 
 router.post("/login", postLogin)
-router.put("/signup", putSignUp)
+router.put("/register", putSignUp)
 router.put("/changepassword", isAuth, changePassword)
 
 export default router
