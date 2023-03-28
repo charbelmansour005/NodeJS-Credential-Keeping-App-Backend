@@ -11,11 +11,11 @@ import { deleteCred } from "../services/deleteCred.service.js"
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
-    const credential = req.body as CredentialModel
+    const { title } = req.query
 
-    const result = await filterCreds(current_user, credential)
+    const result = await filterCreds(current_user, title)
 
-    res.status(200).json({ searchResults: result })
+    res.status(200).json(result)
   } catch (error) {
     next(error)
   }
@@ -27,7 +27,7 @@ export const getUserCreds: RequestHandler = async (req, res, next) => {
 
     const result = await getCreds(current_user)
 
-    return res.status(200).json({ credentials: result })
+    return res.status(200).json(result)
   } catch (error) {
     next(error)
   }
@@ -88,7 +88,7 @@ export const updateUserCredential: RequestHandler = async (req, res, next) => {
 export const getCredentials: RequestHandler = async (req, res, next) => {
   try {
     const creds = await Credentials.find()
-    return res.status(200).json({ creds: creds })
+    return res.status(200).json(creds)
   } catch (error) {
     next(error)
   }
@@ -100,7 +100,7 @@ export const getCredential: RequestHandler = async (req, res, next) => {
 
     const result = await getCredentialunAuth(credId)
 
-    return res.status(200).json({ result })
+    return res.status(200).json(result)
   } catch (error) {
     next(error)
   }
