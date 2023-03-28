@@ -1,14 +1,17 @@
-import { Types } from "mongoose"
+import { Types, Document } from "mongoose"
 
-type UserModel = {
+type UserModel = Document & {
   email: string
   password: string
+  newPassword?: string
   firstName: string
+  logoutAll: boolean
   lastName: string
   phoneNumber: number
+  signedUp_at: Date
 }
 
-type CredentialModel = {
+type CredentialModel = Document & {
   title: string
   key: string
   creator: Types.ObjectId | unknown
