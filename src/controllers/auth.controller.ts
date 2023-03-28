@@ -19,8 +19,7 @@ const { sign } = jsonwebtoken
 
 export const postLogin: RequestHandler = async (req, res, next) => {
   try {
-    const email = req.body.email
-    const password = req.body.password
+    const { password, email } = req.body
 
     const user = await User.findOne({ email: email })
 
@@ -62,12 +61,61 @@ export const postLogin: RequestHandler = async (req, res, next) => {
   }
 }
 
+export const changePassword: RequestHandler = async (req, res, next) => {
+  try {
+    const current_user = req.userId
+    const { email, password, newPassword } = req.body as UserModel
+
+    if (!current_user) {
+      const error: ErrorResponse = {
+        status: 401,
+        name: "Unauthorized",
+        message: "Please sign in first",
+      }
+      throw error
+    }
+
+    // Find the user document that matches the current user's ID
+    const user = await User.findOne({ email: email, _id: current_user })
+
+    if (!user) {
+      const error: ErrorResponse = {
+        status: 401,
+        name: "Unauthorized",
+        message: "Could not find a user with your identity in our database",
+      }
+      throw error
+    }
+
+    const isEqual = await compare(password, user.password)
+
+    if (!isEqual) {
+      const error: ErrorResponse = {
+        status: 401,
+        name: "Unauthorized",
+        message: "Old password is incorrent",
+      }
+      throw error
+    }
+
+    const hashedPassword = await hash(newPassword, 12)
+
+    user.password = hashedPassword
+    await user.save()
+    res.status(200).json({ message: "Password changed successfully" })
+  } catch (error) {
+    next(error)
+  }
+}
+
 export const putSignUp: RequestHandler = async (req, res, next) => {
   try {
     const { email, password, firstName, lastName, phoneNumber } =
       req.body as UserModel
 
     const user = await User.findOne({ email: email })
+
+    const dateOfSignUp = new Date()
 
     if (user) {
       const error: ErrorResponse = {
@@ -97,6 +145,7 @@ export const putSignUp: RequestHandler = async (req, res, next) => {
       lastName: lastName,
       phoneNumber: phoneNumber,
       password: hashedPassword,
+      signedUp_at: dateOfSignUp,
     })
 
     transporter.sendMail({
