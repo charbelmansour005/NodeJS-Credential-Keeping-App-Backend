@@ -4,8 +4,8 @@ import { CredentialModel } from "../types/types.js"
 import { RequestHandler } from "express"
 import { ErrorResponse } from "../index.js"
 // services
-import { updateCredential } from "../services/updateCredential.js"
-import { getCredentialunAuth } from "../services/getCredentialunAuth.js"
+import { updateCredential } from "../services/updateCredential.service.js"
+import { getCredentialunAuth } from "../services/getCredentialunAuth.service.js"
 
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
