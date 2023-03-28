@@ -3,6 +3,9 @@ import { User } from "../models/user.model.js"
 import { CredentialModel } from "../types/types.js"
 import { RequestHandler } from "express"
 import { ErrorResponse } from "../index.js"
+// services
+import { updateCredential } from "../services/updateCredential.js"
+import { getCredentialunAuth } from "../services/getCredentialunAuth.js"
 
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
@@ -144,54 +147,21 @@ export const deleteUserCred: RequestHandler = async (req, res, next) => {
 export const updateUserCredential: RequestHandler = async (req, res, next) => {
   try {
     const { credId } = req.params
+    const credential = req.body as CredentialModel
 
-    const { title, key } = req.body as CredentialModel
-    const updated_At = new Date()
-
-    const requestedCredential = await Credentials.findById(credId)
-
-    if (!requestedCredential) {
-      const error: ErrorResponse = {
-        message: "Requested credential not found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    } else if (
-      requestedCredential?.creator?.toString() !== req.userId.toString()
-    ) {
-      const error: ErrorResponse = {
-        message: "Unauthorized",
-        name: "Unauthorized",
-        status: 401,
-      }
-      throw error
-    } else if (!title || !key) {
-      const error: ErrorResponse = {
-        message: "Please fill all required fields",
-        name: "Missing fields",
-        status: 404,
-      }
-      throw error
-    }
-
-    requestedCredential.title = title
-    requestedCredential.key = key
-    requestedCredential.updated_At = updated_At
-
-    const result = await requestedCredential.save()
+    const result = await updateCredential(req.userId, credId, credential)
 
     res.status(200).json({
       message: `Success! Updated Credential`,
-      updatedTitle: result.title,
-      updatedKey: result.key,
+      updatedTitle: result.updatedTitle,
+      updatedKey: result.updatedKey,
     })
   } catch (error) {
     next(error)
   }
 }
 
-// unauthorized access
+// for unauthorized access
 
 export const getCredentials: RequestHandler = async (req, res, next) => {
   try {
@@ -205,17 +175,10 @@ export const getCredentials: RequestHandler = async (req, res, next) => {
 export const getCredential: RequestHandler = async (req, res, next) => {
   try {
     const { credId } = req.params
-    const cred = await Credentials.findById(credId)
 
-    if (!cred) {
-      const error: ErrorResponse = {
-        message: "Credential not found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    }
-    return res.status(200).json({ credential: cred })
+    const result = await getCredentialunAuth(credId)
+
+    return res.status(200).json({ result })
   } catch (error) {
     next(error)
   }
