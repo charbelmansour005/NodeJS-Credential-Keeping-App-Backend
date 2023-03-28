@@ -1,10 +1,10 @@
 import { RequestHandler } from "express"
 import { UserModel } from "../types/types.js"
 import { User } from "../models/user.model.js"
-import { ErrorResponse } from "../index.js"
 import bcryptjs from "bcryptjs"
 import jsonwebtoken from "jsonwebtoken"
 import nodemailer from "nodemailer"
+import { createError } from "../utils/errorUtils.js"
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
@@ -24,23 +24,17 @@ export const postLogin: RequestHandler = async (req, res, next) => {
     const user = await User.findOne({ email: email })
 
     if (!user) {
-      const error: ErrorResponse = {
-        status: 401,
-        name: "Not found",
-        message: "A user with this email could not be found",
-      }
-      throw error
+      throw createError(
+        401,
+        "Not found",
+        "A user with this email could not be found"
+      )
     }
 
     const isEqual = await compare(password, user.password)
 
     if (!isEqual) {
-      const error: ErrorResponse = {
-        status: 401,
-        name: "Invalid",
-        message: "The credentials you provided are invalid",
-      }
-      throw error
+      throw createError(401, "Invalid Credentials", "Wrong email or password")
     }
 
     await User.findOneAndUpdate({ email: email }, { logoutAll: false })
@@ -69,22 +63,15 @@ export const changePassword: RequestHandler = async (req, res, next) => {
     const { email, password, newPassword } = req.body as UserModel
 
     if (!current_user) {
-      const error: ErrorResponse = {
-        status: 401,
-        name: "Unauthorized",
-        message: "Please sign in first",
-      }
-      throw error
+      throw createError(401, "Unauthorized", "Please sign in first")
     }
 
     if (!email || !password || !newPassword) {
-      const error: ErrorResponse = {
-        status: 404,
-        name: "Missing fields",
-        message:
-          "Please provide all necessary credentials to change your password",
-      }
-      throw error
+      throw createError(
+        404,
+        "Missing fields",
+        "Please provide all necessary credentials to change your password"
+      )
     }
 
     const user = await User.findOneAndUpdate(
@@ -94,23 +81,17 @@ export const changePassword: RequestHandler = async (req, res, next) => {
     )
 
     if (!user) {
-      const error: ErrorResponse = {
-        status: 401,
-        name: "Unauthorized",
-        message: "Could not find a user with your identity in our database",
-      }
-      throw error
+      throw createError(
+        401,
+        "Unauthorized",
+        "Could not find a user with your identity in our database"
+      )
     }
 
     const isEqual = await compare(password, user.password)
 
     if (!isEqual) {
-      const error: ErrorResponse = {
-        status: 401,
-        name: "Unauthorized",
-        message: "Old password is incorrent",
-      }
-      throw error
+      throw createError(401, "Unauthorized", "Old password is incorrent")
     }
 
     const hashedPassword = await hash(newPassword, 12)
@@ -137,23 +118,21 @@ export const putSignUp: RequestHandler = async (req, res, next) => {
     const dateOfSignUp = new Date()
 
     if (user) {
-      const error: ErrorResponse = {
-        status: 409,
-        name: "Already exists",
-        message: "A user with this email already exists",
-      }
-      throw error
+      throw createError(
+        409,
+        "Already exists",
+        "A user with this email already exists"
+      )
     }
 
     const users = await User.find({ phoneNumber: phoneNumber })
 
     if (users.length !== 0) {
-      const error: ErrorResponse = {
-        status: 409,
-        name: "Already exists",
-        message: "A user with this phone number already exists",
-      }
-      throw error
+      throw createError(
+        409,
+        "Already exists",
+        "A user with this phone number already exists"
+      )
     }
 
     const hashedPassword = await hash(password, 12)

@@ -19,13 +19,12 @@ export const isAuth: RequestHandler = async (req, res, next) => {
     const access_token = authHeader.split(" ")[1]
 
     let decodedToken: string | JwtPayload
-
     try {
       decodedToken = verify(access_token, process.env.SECRET as string) as {
         userId: string
       }
-      const user = User.findOne({ _id: decodedToken.userId })
-      if ((await user).logoutAll === true) {
+      const user = await User.findOne({ _id: decodedToken.userId })
+      if (user.logoutAll === true) {
         const error: ErrorResponse = {
           message: "Your password has been changed, please sign in again",
           name: "Unauthenticated",
