@@ -6,34 +6,14 @@ import { ErrorResponse } from "../index.js"
 // services
 import { updateCredential } from "../services/updateCredential.service.js"
 import { getCredentialunAuth } from "../services/getCredentialunAuth.service.js"
+import { filterCreds } from "../services/filterCreds.service.js"
 
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
     const { title } = req.body as CredentialModel
 
-    if (!current_user) {
-      const error: ErrorResponse = {
-        message: "User not found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    }
-
-    const result = await Credentials.find({
-      creator: current_user,
-      title: { $regex: title.toString(), $options: "i" },
-    })
-
-    if (result.length === 0) {
-      const error: ErrorResponse = {
-        message: "Requested document could not be found",
-        name: "Not found",
-        status: 404,
-      }
-      throw error
-    }
+    const result = await filterCreds(current_user, title)
 
     res.status(200).json({ searchResults: result })
   } catch (error) {
