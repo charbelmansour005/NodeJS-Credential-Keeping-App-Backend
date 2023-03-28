@@ -66,7 +66,7 @@ export const postLogin: RequestHandler = async (req, res, next) => {
 export const changePassword: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
-    const { password, newPassword } = req.body as UserModel
+    const { email, password, newPassword } = req.body as UserModel
 
     if (!current_user) {
       const error: ErrorResponse = {
@@ -77,8 +77,18 @@ export const changePassword: RequestHandler = async (req, res, next) => {
       throw error
     }
 
+    if (!email || !password || !newPassword) {
+      const error: ErrorResponse = {
+        status: 404,
+        name: "Missing fields",
+        message:
+          "Please provide all necessary credentials to change your password",
+      }
+      throw error
+    }
+
     const user = await User.findOneAndUpdate(
-      { _id: current_user },
+      { _id: current_user, email: email },
       { logoutAll: true },
       { new: true }
     )
