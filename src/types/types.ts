@@ -10,6 +10,7 @@ type UserModel = Document & {
   phoneNumber: number
   signedUp_At: Date
   pass_updated_At: Date
+  role: string
 }
 
 type CredentialModel = Document & {
