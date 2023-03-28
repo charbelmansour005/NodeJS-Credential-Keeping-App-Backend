@@ -5,7 +5,7 @@ type UserModel = Document & {
   password: string
   newPassword?: string
   firstName: string
-  logoutAll: boolean
+  logoutAll?: boolean
   lastName: string
   phoneNumber: number
   signedUp_at: Date

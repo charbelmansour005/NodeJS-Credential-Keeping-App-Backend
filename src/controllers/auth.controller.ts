@@ -1,10 +1,10 @@
 import { RequestHandler } from "express"
+import { UserModel } from "../types/types.js"
 import { User } from "../models/user.model.js"
+import { ErrorResponse } from "../index.js"
 import bcryptjs from "bcryptjs"
 import jsonwebtoken from "jsonwebtoken"
-import { ErrorResponse } from "../index.js"
 import nodemailer from "nodemailer"
-import { UserModel } from "../types/types.js"
 
 var transporter = nodemailer.createTransport({
   service: "gmail",
@@ -43,6 +43,8 @@ export const postLogin: RequestHandler = async (req, res, next) => {
       throw error
     }
 
+    await User.findOneAndUpdate({ email: email }, { logoutAll: false })
+
     let loadedUser: unknown | any
     loadedUser = user
 
@@ -64,7 +66,7 @@ export const postLogin: RequestHandler = async (req, res, next) => {
 export const changePassword: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
-    const { email, password, newPassword } = req.body as UserModel
+    const { password, newPassword } = req.body as UserModel
 
     if (!current_user) {
       const error: ErrorResponse = {
@@ -75,8 +77,11 @@ export const changePassword: RequestHandler = async (req, res, next) => {
       throw error
     }
 
-    // Find the user document that matches the current user's ID
-    const user = await User.findOne({ email: email, _id: current_user })
+    const user = await User.findOneAndUpdate(
+      { _id: current_user },
+      { logoutAll: true },
+      { new: true }
+    )
 
     if (!user) {
       const error: ErrorResponse = {
@@ -102,6 +107,7 @@ export const changePassword: RequestHandler = async (req, res, next) => {
 
     user.password = hashedPassword
     await user.save()
+
     res.status(200).json({ message: "Password changed successfully" })
   } catch (error) {
     next(error)

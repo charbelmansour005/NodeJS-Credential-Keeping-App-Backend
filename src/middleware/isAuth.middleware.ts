@@ -1,6 +1,7 @@
 import { RequestHandler } from "express"
 import { JwtPayload, verify } from "jsonwebtoken"
 import { ErrorResponse } from "../index.js"
+import { User } from "../models/user.model.js"
 
 export const isAuth: RequestHandler = async (req, res, next) => {
   try {
@@ -20,7 +21,18 @@ export const isAuth: RequestHandler = async (req, res, next) => {
     let decodedToken: string | JwtPayload
 
     try {
-      decodedToken = verify(access_token, process.env.SECRET as string)
+      decodedToken = verify(access_token, process.env.SECRET as string) as {
+        userId: string
+      }
+      const user = User.findOne({ _id: decodedToken.userId })
+      if ((await user).logoutAll === true) {
+        const error: ErrorResponse = {
+          message: "Your password has been changed, please sign in again",
+          name: "Unauthenticated",
+          status: 401,
+        }
+        throw error
+      }
     } catch (error) {
       const { message, name } = error as Error
       const thrownError: ErrorResponse = {
