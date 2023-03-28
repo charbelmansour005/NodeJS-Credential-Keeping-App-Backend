@@ -14,11 +14,11 @@ const router = Router()
 
 router.get("/mine", isAuth, getUserCreds)
 router.post("/search", isAuth, filterUserCreds)
-router.route("/credential").post(isAuth, addUserCred)
+router.post("/credential", isAuth, addUserCred)
 router.put("/:credId", isAuth, updateUserCredential)
 router.delete("/:credId", isAuth, deleteUserCred)
 
-// extra routes - (unauthenticated)
+// extra routes - (unauthenticated routes)
 router.get("/", getCredentials)
 router.get("/:credId", getCredential)
 
