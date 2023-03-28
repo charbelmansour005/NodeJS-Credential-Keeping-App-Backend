@@ -5,6 +5,7 @@ import {
   addUserCred,
   deleteUserCred,
   updateUserCredential,
+  filterUserCreds,
 } from "../controllers/credential.controller.js"
 import { isAuth } from "../middleware/isAuth.middleware.js"
 import { Router } from "express"
@@ -12,6 +13,7 @@ import { Router } from "express"
 const router = Router()
 
 router.get("/mine", isAuth, getUserCreds)
+router.post("/search", isAuth, filterUserCreds)
 router.route("/credential").post(isAuth, addUserCred)
 router.put("/:credId", isAuth, updateUserCredential)
 router.delete("/:credId", isAuth, deleteUserCred)
