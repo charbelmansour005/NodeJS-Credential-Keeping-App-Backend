@@ -1,9 +1,15 @@
 import { Router } from "express"
-import { postLogin, putSignUp } from "../controllers/auth.controller.js"
+import { isAuth } from "../middleware/isAuth.middleware.js"
+import {
+  postLogin,
+  putSignUp,
+  changePassword,
+} from "../controllers/auth.controller.js"
 
 const router = Router()
 
 router.post("/login", postLogin)
 router.put("/signup", putSignUp)
+router.put("/changepassword", isAuth, changePassword)
 
 export default router
