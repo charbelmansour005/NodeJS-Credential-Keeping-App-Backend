@@ -1,6 +1,6 @@
 import { Credentials } from "../models/credential.model.js"
 import { CredentialModel } from "../types/types.js"
-import { ErrorResponse } from "../index.js"
+import { createError } from "../utils/errorUtils.js"
 
 export async function updateCredential(
   userId: string | unknown,
@@ -13,26 +13,11 @@ export async function updateCredential(
   const requestedCredential = await Credentials.findById(credId)
 
   if (!requestedCredential) {
-    const error: ErrorResponse = {
-      message: "Requested credential not found",
-      name: "Not found",
-      status: 404,
-    }
-    throw error
+    throw createError(404, "Not found", "Requested credential not found")
   } else if (requestedCredential.creator.toString() !== userId) {
-    const error: ErrorResponse = {
-      message: "Unauthorized",
-      name: "Unauthorized",
-      status: 401,
-    }
-    throw error
+    throw createError(401, "Unauthorized", "Unauthorized")
   } else if (!title || !key) {
-    const error: ErrorResponse = {
-      message: "Please fill all required fields",
-      name: "Missing fields",
-      status: 404,
-    }
-    throw error
+    throw createError(404, "Missing fields", "Please fill all required fields")
   }
 
   requestedCredential.title = title

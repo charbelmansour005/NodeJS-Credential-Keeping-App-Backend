@@ -9,15 +9,15 @@ export async function filterCreds(
     throw createError(404, "Not found", "User not found")
   }
 
-  const filteredCredentials = await Credentials.find({
+  const queryResults = await Credentials.find({
     $and: [{ creator: current_user }, { $or: [{ title: { $regex: title } }] }],
   }).sort({ created_At: -1 })
 
-  if (filteredCredentials.length === 0) {
+  if (queryResults.length === 0) {
     throw createError(404, "Not found", "Requested document could not be found")
   }
 
   return {
-    filteredCredentials,
+    queryResults,
   }
 }
