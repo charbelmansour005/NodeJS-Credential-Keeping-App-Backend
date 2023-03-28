@@ -5,7 +5,7 @@ import { updateCredential } from "../services/updateCredential.service.js"
 import { getCredentialunAuth } from "../services/getCredentialunAuth.service.js"
 import { filterCreds } from "../services/filterCreds.service.js"
 import { addCred } from "../services/addCred.service.js"
-import { getCreds } from "../services/getCreds.js"
+import { getCreds } from "../services/getCreds.service.js"
 import { deleteCred } from "../services/deleteCred.service.js"
 
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
