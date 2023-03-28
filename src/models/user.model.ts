@@ -20,6 +20,11 @@ const userSchema = new Schema<UserModel>({
     required: [false, "Please enter your first name"],
   },
 
+  logoutAll: {
+    type: Boolean,
+    required: false,
+  },
+
   lastName: {
     type: String,
     required: [false, "Please enter your first name"],
@@ -28,6 +33,13 @@ const userSchema = new Schema<UserModel>({
   phoneNumber: {
     type: Number,
     required: [false, "Please enter your phone number"],
+  },
+
+  signedUp_at: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+    select: false,
   },
 })
 
