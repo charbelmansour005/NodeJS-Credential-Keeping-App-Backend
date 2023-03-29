@@ -72,7 +72,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
   </thead>
   <tbody>
     <tr>
-      <td>POST</td>
+      <td>```diff ! POST```</td>
       <td>/api/auth/register</td>
       <td>Register a new user</td>
        <td></td>
