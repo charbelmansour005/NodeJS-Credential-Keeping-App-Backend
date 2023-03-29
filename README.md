@@ -95,12 +95,6 @@ JWT_SECRET=&lt;your-secret-key&gt;
     </tr>  
     <tr>
       <td>GET</td>
-      <td>/api/all?page=1&sort=-updated_At</td>
-      <td>Get <strong>ALL<strong> credentials</td>
-       <td>admin</td>
-    </tr>
-    <tr>
-      <td>GET</td>
       <td>/api/mine?page=1&sort=-updated_At</td>
       <td>Signed in user gets his credentials</td>
        <td>client, admin</td>
@@ -109,6 +103,18 @@ JWT_SECRET=&lt;your-secret-key&gt;
       <td>GET</td>
       <td>/api/[credential id]</td>
       <td>Get a single credential from <strong>ANY<strong> user</td>
+       <td>admin</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/all?page=1&sort=-updated_At</td>
+      <td>Get <strong>ALL<strong> credentials</td>
+       <td>admin</td>
+    </tr>
+    <tr>
+      <td>PUT</td>
+      <td>/api/auth/admin/changepassword</td>
+      <td>Change <strong>ANY<strong> client's password</td>
        <td>admin</td>
     </tr>
     <tr>
