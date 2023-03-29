@@ -8,6 +8,8 @@ import { addCred } from "../services/addCred.service.js"
 import { getCreds } from "../services/getCreds.service.js"
 import { deleteCred } from "../services/deleteCred.service.js"
 
+const ItemsPerPage = 10
+
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId
@@ -83,12 +85,15 @@ export const updateUserCredential: RequestHandler = async (req, res, next) => {
   }
 }
 
-// for unauthorized access
+// * ADMINS
 
 export const getCredentials: RequestHandler = async (req, res, next) => {
   try {
+    const { page }: any = req.query
     const credentials = await Credentials.find()
-    // ! add pagination
+      .skip((page - 1) * ItemsPerPage)
+      .limit(ItemsPerPage)
+
     return res.status(200).json({ AllCredentials: credentials })
   } catch (error) {
     next(error)

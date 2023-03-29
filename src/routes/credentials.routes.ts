@@ -19,9 +19,9 @@ router.post("/credential", isAuth, addUserCred)
 router.put("/:credId", isAuth, updateUserCredential)
 router.delete("/:credId", isAuth, deleteUserCred)
 
-// extra routes - (admin routes)
+// * ADMINS
 
-router.get("/", isAuth, isAdmin, getCredentials)
+router.get("/all", isAuth, isAdmin, getCredentials)
 router.get("/:credId", isAuth, isAdmin, getCredential)
 
 export default router

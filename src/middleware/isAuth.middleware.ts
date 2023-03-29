@@ -1,6 +1,5 @@
 import { RequestHandler } from "express"
 import { JwtPayload, verify } from "jsonwebtoken"
-import { ErrorResponse } from "../index.js"
 import { User } from "../models/user.model.js"
 import { createError } from "../utils/errorUtils.js"
 
