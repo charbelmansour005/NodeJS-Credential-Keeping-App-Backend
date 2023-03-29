@@ -25,9 +25,9 @@ export const getUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId as string | unknown
 
-    const result = await getCreds(current_user)
+    const credentials = await getCreds(current_user)
 
-    return res.status(200).json(result)
+    return res.status(200).json(credentials)
   } catch (error) {
     next(error)
   }
@@ -87,8 +87,9 @@ export const updateUserCredential: RequestHandler = async (req, res, next) => {
 
 export const getCredentials: RequestHandler = async (req, res, next) => {
   try {
-    const creds = await Credentials.find()
-    return res.status(200).json(creds)
+    const credentials = await Credentials.find()
+    // ! add pagination
+    return res.status(200).json({ AllCredentials: credentials })
   } catch (error) {
     next(error)
   }
@@ -98,9 +99,9 @@ export const getCredential: RequestHandler = async (req, res, next) => {
   try {
     const { credId } = req.params
 
-    const result = await getCredentialunAuth(credId)
+    const requesedCredential = await getCredentialunAuth(credId)
 
-    return res.status(200).json(result)
+    return res.status(200).json({ requesedCredential: requesedCredential })
   } catch (error) {
     next(error)
   }
