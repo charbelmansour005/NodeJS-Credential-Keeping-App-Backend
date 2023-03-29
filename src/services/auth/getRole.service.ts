@@ -1,5 +1,5 @@
 import jsonwebtoken, { JwtPayload } from "jsonwebtoken"
-import { createError } from "../utils/errorUtils.js"
+import { createError } from "../../utils/errorUtils.js"
 
 const { verify } = jsonwebtoken
 

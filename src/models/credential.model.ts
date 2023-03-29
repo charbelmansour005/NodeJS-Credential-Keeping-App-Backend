@@ -7,6 +7,11 @@ const credentialSchema = new Schema<CredentialModel>({
     required: [true, "Please enter a title for your key"],
   },
 
+  email: {
+    type: String,
+    required: false,
+  },
+
   key: {
     type: String,
     required: [true, "Please enter your key"],

@@ -15,6 +15,7 @@ type UserModel = Document & {
 
 type CredentialModel = Document & {
   title: string
+  email: string
   key: string
   creator: Types.ObjectId | unknown
   created_At: Date

@@ -1,18 +1,10 @@
-import { UserModel } from "../types/types.js"
-import { createTransport } from "nodemailer"
-import { createError } from "../utils/errorUtils.js"
-import { User } from "../models/user.model.js"
+import { UserModel } from "../../types/types.js"
+import { createError } from "../../utils/errorUtils.js"
+import { User } from "../../models/user.model.js"
+import { transporter } from "../../helper/transporter.js"
 import bcryptjs from "bcryptjs"
 
 const { hash } = bcryptjs
-
-export var transporter = createTransport({
-  service: "gmail",
-  auth: {
-    user: "charbelmansour005@gmail.com",
-    pass: "encxvodkkuczlxdv",
-  },
-})
 
 export async function register(registerBody: UserModel) {
   const { email, password, firstName, lastName, phoneNumber } = registerBody

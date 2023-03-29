@@ -1,7 +1,7 @@
-import { User } from "../models/user.model.js"
-import { UserModel } from "../types/types.js"
+import { User } from "../../models/user.model.js"
+import { UserModel } from "../../types/types.js"
 import bcryptjs from "bcryptjs"
-import { createError } from "../utils/errorUtils.js"
+import { createError } from "../../utils/errorUtils.js"
 import jsonwebtoken from "jsonwebtoken"
 
 const { compare } = bcryptjs
