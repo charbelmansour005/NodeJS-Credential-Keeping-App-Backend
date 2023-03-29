@@ -96,7 +96,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
     <tr>
       <td>GET</td>
       <td>/api/all?page=1&sort=-updated_At</td>
-      <td>Get all credentials</td>
+      <td>Get <strong>ALL<strong> credentials</td>
        <td>admin</td>
     </tr>
     <tr>
@@ -107,8 +107,8 @@ JWT_SECRET=&lt;your-secret-key&gt;
     </tr> 
     <tr>
       <td>GET</td>
-      <td>/api/<credential id></td>
-      <td>Get a single credential from any user</td>
+      <td>/api/[credential id]</td>
+      <td>Get a single credential from <strong>ANY<strong> user</td>
        <td>admin</td>
     </tr>
     <tr>
@@ -126,10 +126,12 @@ JWT_SECRET=&lt;your-secret-key&gt;
     <tr>
       <td>PUT</td>
       <td>/api/:id</td>
-      <td>Update an existing credential (user or admin)</td>
+      <td>Update an existing credential</td>
+       <td>client, admin</td>
     </tr>
     <tr>
       <td>DELETE</td>
       <td>/api/[credential _id]</td>
-      <td>Delete an existing credential (user or admin)</td>
+      <td>Delete an existing credential</td>
+       <td>client, admin</td>
     </tr>
