@@ -2,7 +2,7 @@ import { Router } from "express"
 import { isAuth } from "../middleware/isAuth.middleware.js"
 import {
   postLogin,
-  putSignUp,
+  putRegister,
   changePassword,
   getRole,
 } from "../controllers/auth.controller.js"
@@ -10,7 +10,7 @@ import {
 const router = Router()
 
 router.post("/login", postLogin)
-router.put("/register", putSignUp)
+router.put("/register", putRegister)
 router.put("/changepassword", isAuth, changePassword)
 router.get("/whoami", isAuth, getRole)
 
