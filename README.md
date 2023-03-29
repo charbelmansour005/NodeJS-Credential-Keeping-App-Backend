@@ -136,7 +136,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
        <td>client, admin</td>
     </tr>
     <tr>
-      <td>DELETE</td>
+      <td style=color:"red">DELETE</td>
       <td>/api/[credential _id]</td>
       <td>Delete an existing credential</td>
        <td>client, admin</td>
