@@ -4,6 +4,14 @@
 
 <p>This is a backend application for a Credential Keeping App, developed using MongoDB (mongoose), NodeJS, and TypeScript. The app has user and admin roles with the intention of adding more features in the future.</p>
 
+```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+```
+
 <h2>Requirements</h2>
 
 <ul>
