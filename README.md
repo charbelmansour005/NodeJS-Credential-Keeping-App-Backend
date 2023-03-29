@@ -4,14 +4,6 @@
 
 <p>This is a backend application for a Credential Keeping App, developed using MongoDB (mongoose), NodeJS, and TypeScript. The app has user and admin roles with the intention of adding more features in the future.</p>
 
-```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
-```
-
 <h2>Requirements</h2>
 
 <ul>
@@ -72,7 +64,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
   </thead>
   <tbody>
     <tr>
-      ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) POST
+      <td>POST</td>
       <td>/api/auth/register</td>
       <td>Register a new user</td>
        <td></td>
@@ -144,7 +136,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
        <td>client, admin</td>
     </tr>
     <tr>
-      <td style=color:"red">DELETE</td>
+      <td>DELETE</td>
       <td>/api/[credential _id]</td>
       <td>Delete an existing credential</td>
        <td>client, admin</td>
