@@ -1,13 +1,9 @@
 import { RequestHandler } from "express"
 import { UserModel } from "../types/types.js"
-import bcryptjs from "bcryptjs"
-import jsonwebtoken, { JwtPayload } from "jsonwebtoken"
-import { createError } from "../utils/errorUtils.js"
 import { changePass } from "../services/changePass.service.js"
 import { register } from "../services/register.service.js"
 import { login } from "../services/login.service.js"
-
-const { verify } = jsonwebtoken
+import { getRoleService } from "../services/getRole.service.js"
 
 export const postLogin: RequestHandler = async (req, res, next) => {
   try {
@@ -50,19 +46,10 @@ export const putRegister: RequestHandler = async (req, res, next) => {
 export const getRole: RequestHandler = async (req, res, next) => {
   try {
     const authHeader = req.get("Authorization")
-    if (!authHeader) {
-      throw createError(401, "Unauthenticated", "Unauthenticated")
-    }
-    const access_token = authHeader.split(" ")[1]
-    let decodedToken: string | JwtPayload
-    try {
-      decodedToken = verify(access_token, process.env.SECRET as string) as {
-        role: string
-      }
-      res.status(200).json({ role: decodedToken.role })
-    } catch (err) {
-      console.log(err)
-    }
+
+    const result = await getRoleService(authHeader)
+
+    res.status(200).json(result)
   } catch (error) {
     next(error)
   }
