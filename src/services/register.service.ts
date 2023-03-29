@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs"
 
 const { hash } = bcryptjs
 
-var transporter = createTransport({
+export var transporter = createTransport({
   service: "gmail",
   auth: {
     user: "charbelmansour005@gmail.com",
