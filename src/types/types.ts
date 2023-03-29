@@ -8,7 +8,7 @@ type UserModel = Document & {
   logoutAll?: boolean
   lastName: string
   phoneNumber: number
-  signedUp_At: Date
+  registeredAt: Date
   pass_updated_At: Date
   role: string
 }

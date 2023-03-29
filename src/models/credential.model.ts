@@ -33,4 +33,6 @@ const credentialSchema = new Schema<CredentialModel>({
   },
 })
 
+credentialSchema.index({ title: 1 })
+
 export const Credentials = model("Credentials", credentialSchema)

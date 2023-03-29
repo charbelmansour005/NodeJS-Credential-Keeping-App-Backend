@@ -22,7 +22,7 @@ const userSchema = new Schema<UserModel>({
 
   lastName: {
     type: String,
-    required: [false, "Please enter your first name"],
+    required: [false, "Please enter your last name"],
   },
 
   phoneNumber: {
@@ -30,7 +30,7 @@ const userSchema = new Schema<UserModel>({
     required: [false, "Please enter your phone number"],
   },
 
-  signedUp_At: {
+  registeredAt: {
     type: Date,
     required: true,
     default: Date.now(),
