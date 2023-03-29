@@ -1,4 +1,3 @@
-import { Credentials } from "../models/credential.model.js"
 import { CredentialModel } from "../types/types.js"
 import { RequestHandler } from "express"
 import { updateCredential } from "../services/updateCredential.service.js"
@@ -7,8 +6,16 @@ import { filterCreds } from "../services/filterCreds.service.js"
 import { addCred } from "../services/addCred.service.js"
 import { getCreds } from "../services/getCreds.service.js"
 import { deleteCred } from "../services/deleteCred.service.js"
-
-const ItemsPerPage = 10
+import { getAllCredentials } from "../services/getAllCredentials.service.js"
+import { ParsedQs } from "qs"
+// Done -> add pagination for getUsercreds
+// Todo -> add category schema
+// Todo -> add client support platform
+// Done -> add admin can update any password
+// Todo -> add admin can delete client accounts
+// Todo -> add admin can ban client accounts
+// Todo -> add owner role which can prevent admin accounts from accessing their accounts
+const ItemsPerPage = 20
 
 export const filterUserCreds: RequestHandler = async (req, res, next) => {
   try {
@@ -27,7 +34,17 @@ export const getUserCreds: RequestHandler = async (req, res, next) => {
   try {
     const current_user = req.userId as string | unknown
 
-    const credentials = await getCreds(current_user)
+    const { page, sort }: ParsedQs = req.query
+
+    const pageNumber = Number(page)
+    const dataSort = String(sort)
+
+    const credentials = await getCreds(
+      current_user,
+      ItemsPerPage,
+      pageNumber,
+      dataSort
+    )
 
     return res.status(200).json(credentials)
   } catch (error) {
@@ -89,12 +106,14 @@ export const updateUserCredential: RequestHandler = async (req, res, next) => {
 
 export const getCredentials: RequestHandler = async (req, res, next) => {
   try {
-    const { page }: any = req.query
-    const credentials = await Credentials.find()
-      .skip((page - 1) * ItemsPerPage)
-      .limit(ItemsPerPage)
+    const { page, sort }: ParsedQs = req.query
 
-    return res.status(200).json({ AllCredentials: credentials })
+    const pageNumber = Number(page)
+    const dataSort = String(sort)
+
+    const result = await getAllCredentials(pageNumber, dataSort, ItemsPerPage)
+
+    return res.status(200).json({ allCredentials: result })
   } catch (error) {
     next(error)
   }
