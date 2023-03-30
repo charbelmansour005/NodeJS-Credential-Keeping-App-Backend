@@ -1,5 +1,5 @@
-import { Credentials } from "../../models/credential.model.js"
-import { createError } from "../../utils/errorUtils.js"
+import { Credentials } from "../../../models/credential.model.js"
+import { createError } from "../../../utils/errorUtils.js"
 
 export async function getAllCredentials(
   pageNumber: number,
@@ -11,7 +11,7 @@ export async function getAllCredentials(
     .limit(ItemsPerPage)
     .sort(dataSort)
 
-  if (!credentials) {
+  if (credentials.length === 0) {
     throw createError(404, "Not Found", "We couldn't find any credentials")
   }
 

@@ -7,12 +7,16 @@ export async function getCreds(
   pageNumber: number,
   dataSort: string
 ) {
+  if (!current_user) {
+    throw createError(404, "Unauthorized", "Unauthorized")
+  }
+
   const credentials = await Credentials.find({ creator: current_user })
     .skip((pageNumber - 1) * ItemsPerPage)
     .limit(ItemsPerPage)
     .sort(dataSort)
 
-  if (!credentials.length) {
+  if (credentials.length === 0) {
     throw createError(
       404,
       "Not found",

@@ -1,15 +1,14 @@
 import { CredentialModel } from "../types/types.js"
 import { RequestHandler } from "express"
 import { updateCredential } from "../services/credentials/updateCredential.service.js"
-import { getCredentialunAuth } from "../services/credentials/getCredentialunAuth.service.js"
 import { filterCreds } from "../services/credentials/filterCreds.service.js"
 import { addCred } from "../services/credentials/addCred.service.js"
 import { getCreds } from "../services/credentials/getCreds.service.js"
 import { deleteCred } from "../services/credentials/deleteCred.service.js"
-import { getAllCredentials } from "../services/credentials/getAllCredentials.service.js"
+import { getAllCredentials } from "../services/credentials/admin/getAllCredentials.service.js"
+import { getCredentialunAuth } from "../services/credentials/admin/getCredentialunAuth.service.js"
 import { ParsedQs } from "qs"
 // Done -> add pagination for getUsercreds
-// Todo -> add category schema
 // Todo -> add client support platform
 // Done -> add admin can update any password
 // Todo -> add admin can delete client accounts

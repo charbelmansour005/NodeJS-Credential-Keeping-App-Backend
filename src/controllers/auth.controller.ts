@@ -1,10 +1,10 @@
 import { RequestHandler } from "express"
 import { UserModel } from "../types/types.js"
 import { changePass } from "../services/auth/changePass.service.js"
-import { register } from "../services/auth/register.service.js"
+import { register } from "../services/auth/client/register.service.js"
 import { login } from "../services/auth/login.service.js"
 import { getRoleService } from "../services/auth/getRole.service.js"
-import { updateAnyUserPass } from "../services/auth/updateAnyUserPass.service.js"
+import { updateAnyUserPass } from "../services/auth/admin/updateAnyUserPass.service.js"
 
 export const postLogin: RequestHandler = async (req, res, next) => {
   try {

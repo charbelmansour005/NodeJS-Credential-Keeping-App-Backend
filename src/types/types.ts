@@ -23,9 +23,20 @@ type CredentialModel = Document & {
   updated_At: Date
 }
 
+enum Status {
+  PENDING = "pending",
+  INPROGRESS = "inprogress",
+  RESOLVED = "resolved",
+  REJECTED = "rejected",
+}
+
 type TicketModel = Document & {
-  name: string
+  title: string
+  body: string
+  status: string
+  createdDate: Date
   creator: Types.ObjectId | unknown
 }
 
 export type { UserModel, CredentialModel, TicketModel }
+export { Status }

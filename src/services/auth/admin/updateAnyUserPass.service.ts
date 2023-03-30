@@ -1,8 +1,8 @@
-import { User } from "../../models/user.model.js"
-import { UserModel } from "../../types/types.js"
-import { createError } from "../../utils/errorUtils.js"
+import { User } from "../../../models/user.model.js"
+import { UserModel } from "../../../types/types.js"
+import { createError } from "../../../utils/errorUtils.js"
 import bcryptjs from "bcryptjs"
-import { transporter } from "../../helper/transporter.js"
+import { transporter } from "../../../helper/transporter.js"
 
 const { hash } = bcryptjs
 

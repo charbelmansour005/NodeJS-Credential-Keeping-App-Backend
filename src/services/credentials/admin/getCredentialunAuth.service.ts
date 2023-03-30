@@ -1,5 +1,5 @@
-import { Credentials } from "../../models/credential.model.js"
-import { createError } from "../../utils/errorUtils.js"
+import { Credentials } from "../../../models/credential.model.js"
+import { createError } from "../../../utils/errorUtils.js"
 
 export async function getCredentialunAuth(credId: string): Promise<{}> {
   const result = await Credentials.findOne({ _id: credId })
