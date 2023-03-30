@@ -1,7 +1,7 @@
 import bcryptjs from "bcryptjs"
-import { User } from "../../models/user.model.js"
-import { UserModel } from "../../types/types.js"
-import { createError } from "../../utils/errorUtils.js"
+import { User } from "../../../models/user.model.js"
+import { UserModel } from "../../../types/types.js"
+import { createError } from "../../../utils/errorUtils.js"
 
 const { hash, compare } = bcryptjs
 

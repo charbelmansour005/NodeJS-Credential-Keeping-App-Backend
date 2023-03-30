@@ -14,7 +14,16 @@ const ticketValidations = [
     .notEmpty()
     .withMessage("Body must not be empty")
     .isLength({ min: 2, max: 400 })
-    .withMessage("Body must be between 2 and 25 characters"),
+    .withMessage("Body must be between 2 and 400 characters"),
 ]
 
-export { ticketValidations }
+const ticketUpdateValidations = [
+  check("status")
+    .isString()
+    .withMessage("Status must be a string")
+    .notEmpty()
+    .withMessage("Status must not be empty")
+    .isLength({ min: 7, max: 10 }),
+]
+
+export { ticketValidations, ticketUpdateValidations }

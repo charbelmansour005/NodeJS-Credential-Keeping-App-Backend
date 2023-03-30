@@ -1,6 +1,6 @@
-import { Credentials } from "../../models/credential.model.js"
-import { CredentialModel } from "../../types/types.js"
-import { createError } from "../../utils/errorUtils.js"
+import { Credentials } from "../../../models/credential.model.js"
+import { CredentialModel } from "../../../types/types.js"
+import { createError } from "../../../utils/errorUtils.js"
 
 export async function updateCredential(
   userId: string | unknown,

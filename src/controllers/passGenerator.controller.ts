@@ -1,5 +1,5 @@
 import { RequestHandler } from "express"
-import { generatePass } from "../services/passwordGenerator.service.js"
+import { generatePass } from "../services/extras/passwordGenerator.service.js"
 
 export const requestPassword: RequestHandler = async (req, res, next) => {
   try {
