@@ -1,6 +1,6 @@
 import { check } from "express-validator"
 
-export const registerValidations = [
+const registerValidations = [
   check("email")
     .isEmail()
     .withMessage("Invalid Email Format")
@@ -44,4 +44,24 @@ export const registerValidations = [
     .withMessage("Phone number must not be empty")
     .isLength({ max: 8 })
     .withMessage("Phone number must not exceed 8 numbers"),
+  check("isVip")
+    .isBoolean()
+    .withMessage("isVIP must be a boolean (true or false)")
+    .notEmpty(),
 ]
+
+const changePasswordValidations = [
+  check("newPassword")
+    .isString()
+    .withMessage("Password must be a string")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,30}$/
+    )
+    .withMessage(
+      "Password must contain 8 or more characters, with 1 upper case, 1 lower case and a special character"
+    )
+    .notEmpty()
+    .withMessage("Password must not be empty"),
+]
+
+export { registerValidations, changePasswordValidations }

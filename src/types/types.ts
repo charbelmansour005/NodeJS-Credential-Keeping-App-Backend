@@ -34,8 +34,10 @@ type TicketModel = Document & {
   title: string
   body: string
   status: string
+  isVip: boolean
   createdDate: Date
   creator: Types.ObjectId | unknown
+  user?: any
 }
 
 export type { UserModel, CredentialModel, TicketModel }

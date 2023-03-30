@@ -5,11 +5,32 @@ import { register } from "../services/auth/client/register.service.js"
 import { login } from "../services/auth/login.service.js"
 import { getRoleService } from "../services/auth/getRole.service.js"
 import { updateAnyUserPass } from "../services/auth/admin/updateAnyUserPass.service.js"
+import { createError } from "../utils/errorUtils.js"
+import { validationResult } from "express-validator"
+
+const errorFormatter = ({ msg, param, value }: any) => {
+  return {
+    msg,
+  }
+}
 
 export const postLogin: RequestHandler = async (req, res, next) => {
   try {
-    const loginBody = req.body as UserModel
+    const errors = validationResult(req).formatWith(errorFormatter)
 
+    if (!errors.isEmpty()) {
+      throw createError(
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
+      )
+    }
+
+    const loginBody = req.body as UserModel
     const result = await login(loginBody)
 
     res.status(200).json(result)
@@ -20,6 +41,20 @@ export const postLogin: RequestHandler = async (req, res, next) => {
 
 export const changePassword: RequestHandler = async (req, res, next) => {
   try {
+    const errors = validationResult(req).formatWith(errorFormatter)
+
+    if (!errors.isEmpty()) {
+      throw createError(
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
+      )
+    }
+
     const current_user = req.userId
 
     const userBody = req.body as UserModel
@@ -34,6 +69,20 @@ export const changePassword: RequestHandler = async (req, res, next) => {
 
 export const putRegister: RequestHandler = async (req, res, next) => {
   try {
+    const errors = validationResult(req).formatWith(errorFormatter)
+
+    if (!errors.isEmpty()) {
+      throw createError(
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
+      )
+    }
+
     const registerBody = req.body as UserModel
 
     const result = await register(registerBody)
@@ -60,6 +109,20 @@ export const getRole: RequestHandler = async (req, res, next) => {
 
 export const updateAnyUserPassword: RequestHandler = async (req, res, next) => {
   try {
+    const errors = validationResult(req).formatWith(errorFormatter)
+
+    if (!errors.isEmpty()) {
+      throw createError(
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
+      )
+    }
+
     const resetPasswordBody = req.body as UserModel
 
     const result = await updateAnyUserPass(resetPasswordBody)

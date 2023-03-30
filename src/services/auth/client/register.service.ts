@@ -7,7 +7,8 @@ import bcryptjs from "bcryptjs"
 const { hash } = bcryptjs
 
 export async function register(registerBody: UserModel) {
-  const { email, password, firstName, lastName, phoneNumber } = registerBody
+  const { email, password, firstName, lastName, phoneNumber, isVip } =
+    registerBody
   const user = await User.findOne({ email: email })
 
   const dateOfSignUp = new Date()
@@ -39,6 +40,7 @@ export async function register(registerBody: UserModel) {
     phoneNumber: phoneNumber,
     password: hashedPassword,
     signedUp_at: dateOfSignUp,
+    isVip: isVip,
   })
 
   transporter.sendMail({
@@ -53,7 +55,7 @@ export async function register(registerBody: UserModel) {
 
   return {
     message: "Sign up success",
-    email: registeredPhoneNumber,
-    phoneNumber: registeredEmail,
+    email: registeredEmail,
+    phoneNumber: registeredPhoneNumber,
   }
 }

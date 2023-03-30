@@ -10,13 +10,19 @@ import {
 import { isAuth } from "../middleware/isAuth.middleware.js"
 import { Router } from "express"
 import { isAdmin } from "../middleware/isAdmin.middleware.js"
+import { credentialValidations } from "../validations/credentials/credentiatValidations.js"
 
 const router = Router()
 
 router.get("/mine", isAuth, getUserCreds)
 router.get("/credential", isAuth, filterUserCreds)
-router.post("/credential", isAuth, addUserCred)
-router.put("/credential/:credId", isAuth, updateUserCredential)
+router.post("/credential", credentialValidations, isAuth, addUserCred)
+router.put(
+  "/credential/:credId",
+  credentialValidations,
+  isAuth,
+  updateUserCredential
+)
 router.delete("/credential/:credId", isAuth, deleteUserCred)
 
 // * ADMINS

@@ -8,6 +8,15 @@ import { deleteCred } from "../services/credentials/deleteCred.service.js"
 import { getAllCredentials } from "../services/credentials/admin/getAllCredentials.service.js"
 import { getCredentialunAuth } from "../services/credentials/admin/getCredentialunAuth.service.js"
 import { ParsedQs } from "qs"
+import { validationResult } from "express-validator"
+import { createError } from "../utils/errorUtils.js"
+
+const errorFormatter = ({ msg, param, value }: any) => {
+  return {
+    msg,
+  }
+}
+
 // Done -> add pagination for getUsercreds
 // Todo -> add client support platform
 // Done -> add admin can update any password
@@ -53,6 +62,20 @@ export const getUserCreds: RequestHandler = async (req, res, next) => {
 
 export const addUserCred: RequestHandler = async (req, res, next) => {
   try {
+    const errors = validationResult(req).formatWith(errorFormatter)
+
+    if (!errors.isEmpty()) {
+      throw createError(
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
+      )
+    }
+
     const credential = req.body as CredentialModel
 
     const current_user = req.userId as string | unknown
@@ -86,6 +109,20 @@ export const deleteUserCred: RequestHandler = async (req, res, next) => {
 
 export const updateUserCredential: RequestHandler = async (req, res, next) => {
   try {
+    const errors = validationResult(req).formatWith(errorFormatter)
+
+    if (!errors.isEmpty()) {
+      throw createError(
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
+      )
+    }
+
     const { credId } = req.params
     const credential = req.body as CredentialModel
 

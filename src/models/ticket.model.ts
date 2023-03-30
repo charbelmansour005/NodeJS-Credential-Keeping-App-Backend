@@ -6,18 +6,26 @@ const ticketSchema = new Schema<TicketModel>({
     type: String,
     required: [true, "Please give your ticket a title."],
     maxlength: [25, "Ticket title cannot be more than 25 characters"],
+    minlength: [2, "Ticket title has to be at least 2 characters"],
   },
 
   body: {
     type: String,
     required: [true, "Please give your ticket a title."],
-    maxlength: [250, "Ticket body cannot be more than 250 characters"],
+    maxlength: [400, "Ticket body cannot be more than 250 characters"],
+    minlength: [2, "Ticket body has to be at least 2 characters"],
   },
 
   status: {
     type: String,
     required: true,
     default: Status.PENDING,
+  },
+
+  isVip: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
 
   createdDate: {
@@ -30,6 +38,11 @@ const ticketSchema = new Schema<TicketModel>({
     type: Types.ObjectId,
     required: true,
     ref: "User",
+  },
+
+  user: {
+    type: Object,
+    required: true,
   },
 })
 
