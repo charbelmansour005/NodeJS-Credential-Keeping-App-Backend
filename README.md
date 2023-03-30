@@ -161,9 +161,9 @@ JWT_SECRET=&lt;your-secret-key&gt;
     </tr>
     <tr>
       <td>PUT</td>
-      <td>/api/tickets/clients</td>
+      <td>/api/ticket/:ticketId</td>
       <td>Admin can update a ticket's status</td>
-       <td>admin</td>
+      <td>admin</td>
     </tr>
   </tbody>
 </table>

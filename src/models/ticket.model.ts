@@ -5,15 +5,15 @@ const ticketSchema = new Schema<TicketModel>({
   title: {
     type: String,
     required: [true, "Please give your ticket a title."],
-    maxlength: [25, "Ticket title cannot be more than 25 characters"],
-    minlength: [2, "Ticket title has to be at least 2 characters"],
+    maxlength: [25, "Ticket title cannot have more than 25 characters"],
+    minlength: [2, "Ticket title has to have at least 2 characters"],
   },
 
   body: {
     type: String,
     required: [true, "Please give your ticket a title."],
-    maxlength: [400, "Ticket body cannot be more than 250 characters"],
-    minlength: [2, "Ticket body has to be at least 2 characters"],
+    maxlength: [400, "Ticket body cannot have more than 250 characters"],
+    minlength: [2, "Ticket body has to have at least 2 characters"],
   },
 
   status: {
