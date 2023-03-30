@@ -141,5 +141,29 @@ JWT_SECRET=&lt;your-secret-key&gt;
       <td>Delete an existing credential</td>
        <td>client, admin</td>
     </tr>
+    <tr>
+      <td>POST</td>
+      <td>/api/ticket</td>
+      <td>User can submit a ticket</td>
+       <td>client, admin</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/ticket</td>
+      <td>User can check his submitted tickets</td>
+       <td>client, admin</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td>/api/tickets/clients</td>
+      <td>Admin checks submitted tickets</td>
+       <td>admin</td>
+    </tr>
+    <tr>
+      <td>PUT</td>
+      <td>/api/tickets/clients</td>
+      <td>Admin can update a ticket's status</td>
+       <td>admin</td>
+    </tr>
   </tbody>
 </table>
