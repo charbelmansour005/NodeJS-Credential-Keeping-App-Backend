@@ -1,20 +1,18 @@
 import { TicketModel } from "../types/types.js"
-import { Tickets } from "../models/ticket.model.js"
 import { RequestHandler } from "express"
-import { Status } from "../types/types.js"
 import { createError } from "../utils/errorUtils.js"
 import { ParsedQs } from "qs"
 import { validationResult } from "express-validator"
 import { createTicketService } from "../services/tickets/shared/createTicket.service.js"
 import { getMyTicketsService } from "../services/tickets/shared/getMyTickets.service.js"
+import { getClientTicketsService } from "../services/tickets/admin/getClientTickets.service.js"
+import { updateClientTicketsService } from "../services/tickets/admin/updateClientTickets.service.js"
 
 const errorFormatter = ({ msg, param, value }: any) => {
   return {
     msg,
   }
 }
-
-const ItemsPerPage = 20
 
 export const createTicket: RequestHandler = async (req, res, next) => {
   try {
@@ -67,37 +65,9 @@ export const getClientTickets: RequestHandler = async (req, res, next) => {
 
     const dataSort = String(sort)
 
-    const vipTickets = await Tickets.find({ isVip: true }).sort(dataSort)
-    const nonVipTickets = await Tickets.find({ isVip: false }).sort(dataSort)
+    const result = await getClientTicketsService(dataSort)
 
-    if (!vipTickets && !nonVipTickets) {
-      throw createError(
-        404,
-        "Not found",
-        "There does not seem to be any tickets at this time"
-      )
-    }
-
-    const response = {
-      vip: vipTickets.map((ticket) => ({
-        _id: ticket._id,
-        title: ticket.title,
-        body: ticket.body,
-        createdDate: ticket.createdDate,
-        status: ticket.status,
-        user: ticket.user,
-      })),
-      nonVip: nonVipTickets.map((ticket) => ({
-        _id: ticket._id,
-        title: ticket.title,
-        body: ticket.body,
-        createdDate: ticket.createdDate,
-        status: ticket.status,
-        user: ticket.user,
-      })),
-    }
-
-    res.status(200).json(response)
+    res.status(200).json(result)
   } catch (error) {
     next(error)
   }
@@ -119,38 +89,15 @@ export const updateClientTicket: RequestHandler = async (req, res, next) => {
       )
     }
 
-    const current_user = req.userId
-
-    if (!current_user) {
-      throw createError(401, "Unauthorized", "Unauthorized")
-    }
-
     const { ticketId } = req.params
+    const current_user = req.userId
+    const updateTicketBody = req.body as TicketModel
 
-    const ticketToUpdate = await Tickets.findOne({ _id: ticketId })
-
-    const { status } = req.body as TicketModel
-
-    if (!status) {
-      throw createError(404, "Missing", "Missing status")
-    }
-
-    if (
-      status !== Status.INPROGRESS &&
-      status !== Status.REJECTED &&
-      status !== Status.RESOLVED &&
-      status !== Status.PENDING
-    ) {
-      throw createError(
-        422,
-        "Unprocessable",
-        `The updated status can either be ${Status.INPROGRESS}, ${Status.REJECTED} or ${Status.RESOLVED} `
-      )
-    }
-
-    ticketToUpdate.status = status
-
-    const result = await ticketToUpdate.save()
+    const result = await updateClientTicketsService(
+      ticketId,
+      current_user,
+      updateTicketBody
+    )
 
     res.status(200).json({ message: "Ticket status updated.", details: result })
   } catch (error) {
