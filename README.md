@@ -51,7 +51,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
 
 <p>Soon the client will be able to submit tickets, which then admins can read, and update the ticket's status to resolved, in progress... etc. The client will be able to access all his tickets and view their status, as well as delete tickets only when their status is resolved.</p>
 
-<h2>API Endpoints</h2>
+<h2>API Endpoints [so far]</h2>
 
 <table>
   <thead>
