@@ -30,6 +30,12 @@ const userSchema = new Schema<UserModel>({
     required: [false, "Please enter your phone number"],
   },
 
+  isVip: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   registeredAt: {
     type: Date,
     required: true,

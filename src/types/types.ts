@@ -11,15 +11,21 @@ type UserModel = Document & {
   registeredAt: Date
   pass_updated_At: Date
   role: string
+  isVip: boolean
 }
 
 type CredentialModel = Document & {
   title: string
-  email: string
+  email?: string
   key: string
   creator: Types.ObjectId | unknown
   created_At: Date
   updated_At: Date
 }
 
-export type { UserModel, CredentialModel }
+type TicketModel = Document & {
+  name: string
+  creator: Types.ObjectId | unknown
+}
+
+export type { UserModel, CredentialModel, TicketModel }
