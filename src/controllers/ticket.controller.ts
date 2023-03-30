@@ -14,7 +14,7 @@ const errorFormatter = ({ msg, param, value }: any) => {
 }
 
 const ItemsPerPage = 20
-// ! try
+
 export const createTicket: RequestHandler = async (req, res, next) => {
   try {
     const errors = validationResult(req).formatWith(errorFormatter)
@@ -31,13 +31,14 @@ export const createTicket: RequestHandler = async (req, res, next) => {
       )
     }
     const current_user = req.userId
-    const client = await User.findOne({ _id: current_user })
-    const { title, body } = req.body as TicketModel
-    const createdDate = Date.now()
 
     if (!current_user) {
       throw createError(401, "Unauthorized", "Unauthorized")
     }
+
+    const client = await User.findOne({ _id: current_user })
+    const { title, body } = req.body as TicketModel
+    const createdDate = Date.now()
 
     if (!title || !body) {
       throw createError(
@@ -55,37 +56,16 @@ export const createTicket: RequestHandler = async (req, res, next) => {
       email: client.email,
     }
 
-    if (isVip === true) {
-      const clientTicket = new Tickets({
-        title: title,
-        body: body,
-        createdDate: createdDate,
-        status: Status.PENDING,
-        creator: current_user,
-        user: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-        },
-        isVip: true,
-      })
-      await clientTicket.save()
-    } else {
-      const clientTicket = new Tickets({
-        title: title,
-        body: body,
-        createdDate: createdDate,
-        status: Status.PENDING,
-        creator: current_user,
-        user: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-        },
-        isVip: false,
-      })
-      await clientTicket.save()
-    }
+    const clientTicket = new Tickets({
+      title: title,
+      body: body,
+      createdDate: createdDate,
+      status: Status.PENDING,
+      creator: current_user,
+      user: user,
+      isVip: isVip ? true : false,
+    })
+    await clientTicket.save()
 
     res.status(201).json({
       message: "Ticket created successfully",
@@ -123,7 +103,6 @@ export const getMyTickets: RequestHandler = async (req, res, next) => {
 }
 
 // * ADMINS
-// ! try
 
 export const getClientTickets: RequestHandler = async (req, res, next) => {
   try {
