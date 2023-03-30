@@ -16,12 +16,12 @@ const router = Router()
 router.get("/mine", isAuth, getUserCreds)
 router.get("/credential", isAuth, filterUserCreds)
 router.post("/credential", isAuth, addUserCred)
-router.put("/:credId", isAuth, updateUserCredential)
-router.delete("/:credId", isAuth, deleteUserCred)
+router.put("/credential/:credId", isAuth, updateUserCredential)
+router.delete("/credential/:credId", isAuth, deleteUserCred)
 
 // * ADMINS
 
-router.get("/all", isAuth, isAdmin, getCredentials)
-router.get("/:credId", isAuth, isAdmin, getCredential)
+router.get("/admin/all", isAuth, isAdmin, getCredentials)
+router.get("/admin/credential/:credId", isAuth, isAdmin, getCredential)
 
 export default router

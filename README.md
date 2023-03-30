@@ -141,3 +141,5 @@ JWT_SECRET=&lt;your-secret-key&gt;
       <td>Delete an existing credential</td>
        <td>client, admin</td>
     </tr>
+  </tbody>
+</table>

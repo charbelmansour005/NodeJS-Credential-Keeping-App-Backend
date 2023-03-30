@@ -62,7 +62,7 @@ export const addUserCred: RequestHandler = async (req, res, next) => {
 
     res.status(201).json({
       message: "Credential created successfully",
-      credential_details: result,
+      details: result,
     })
   } catch (error) {
     next(error)
@@ -78,7 +78,7 @@ export const deleteUserCred: RequestHandler = async (req, res, next) => {
 
     return res.status(200).json({
       message: `Credential deleted`,
-      deletedCredential: removedCredential,
+      details: removedCredential,
     })
   } catch (error) {
     next(error)
