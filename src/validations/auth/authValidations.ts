@@ -71,4 +71,10 @@ const changePasswordValidations = [
     .withMessage("Email address required to change password"),
 ]
 
-export { registerValidations, changePasswordValidations }
+const banUserValidations = [
+  check("isBanned")
+    .notEmpty()
+    .withMessage("Please do not submit empty requests..."),
+]
+
+export { registerValidations, changePasswordValidations, banUserValidations }

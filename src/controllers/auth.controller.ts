@@ -7,6 +7,7 @@ import { getRoleService } from "../services/auth/shared/getRole.service.js"
 import { updateAnyUserPass } from "../services/auth/admin/updateAnyUserPass.service.js"
 import { createError } from "../utils/errorUtils.js"
 import { validationResult } from "express-validator"
+import { User } from "../models/user.model.js"
 
 const errorFormatter = ({ value, msg, param, location }: any) => {
   return {
@@ -129,6 +130,27 @@ export const updateAnyUserPassword: RequestHandler = async (req, res, next) => {
     const result = await updateAnyUserPass(resetPasswordBody)
 
     res.status(200).json(result)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const banUserAccounts: RequestHandler = async (req, res, next) => {
+  try {
+    const userId = req.params.userId
+    const user = await User.findById(userId)
+
+    if (!user) {
+      throw createError(
+        404,
+        "User not found",
+        "Make sure you entered the correct ID"
+      )
+    }
+
+    user.isBanned = true
+    await user.save()
+    res.status(200).json({ message: "User has been banned", details: user })
   } catch (error) {
     next(error)
   }

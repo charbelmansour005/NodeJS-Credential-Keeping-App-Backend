@@ -14,17 +14,29 @@ export const isAuth: RequestHandler = async (req, res, next) => {
     const access_token = authHeader.split(" ")[1]
 
     let decodedToken: string | JwtPayload
+
     try {
       decodedToken = verify(access_token, process.env.SECRET as string) as {
         userId: string
         role: string
+        isBanned: boolean
       }
+
       const user = await User.findOne({ _id: decodedToken.userId })
+
       if (user.logoutAll === true) {
         throw createError(
           401,
           "Unauthenticated",
-          "Your password has been changed, please sign in again"
+          "Your password has been changed, please sign in again."
+        )
+      }
+
+      if (user.isBanned === true) {
+        throw createError(
+          401,
+          "Unauthenticated",
+          "You cannot access your account right now."
         )
       }
     } catch (error) {

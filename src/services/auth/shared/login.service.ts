@@ -20,6 +20,10 @@ export async function login(loginBody: UserModel) {
     )
   }
 
+  if (user.isBanned === true) {
+    throw createError(401, "Banned", "Your account has been banned.")
+  }
+
   const isEqual = await compare(password, user.password)
 
   if (!isEqual) {

@@ -4,6 +4,7 @@ import { isAdmin } from "../middleware/isAdmin.middleware.js"
 import {
   changePasswordValidations,
   registerValidations,
+  banUserValidations,
 } from "../validations/auth/authValidations.js"
 import {
   postLogin,
@@ -11,23 +12,37 @@ import {
   changePassword,
   getRole,
   updateAnyUserPassword,
+  banUserAccounts,
 } from "../controllers/auth.controller.js"
 
 const router = Router()
 
 router.post("/login", postLogin)
-router.put("/register", registerValidations, putRegister)
-router.put("/changepassword", changePasswordValidations, isAuth, changePassword)
+router.post("/register", registerValidations, putRegister)
+router.patch(
+  "/changepassword",
+  changePasswordValidations,
+  isAuth,
+  changePassword
+)
 router.get("/whoami", isAuth, getRole)
 
 // * ADMIN
 
-router.put(
+router.patch(
   "/admin/changepassword",
   changePasswordValidations,
   isAuth,
   isAdmin,
   updateAnyUserPassword
+)
+
+router.patch(
+  "/ban/:userId",
+  banUserValidations,
+  isAuth,
+  isAdmin,
+  banUserAccounts
 )
 
 export default router

@@ -82,7 +82,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
        <td>client, admin</td>
     </tr>  
      <tr>
-      <td>PUT</td>
+      <td>PATCH</td>
       <td>/api/auth/changepassword</td>
       <td>Change user's password</td>
        <td>client, admin</td>
@@ -94,7 +94,7 @@ JWT_SECRET=&lt;your-secret-key&gt;
        <td>client, admin</td>
     </tr>  
     <tr>
-      <td>PUT</td>
+      <td>PATCH</td>
       <td>/api/auth/admin/changepassword</td>
       <td>Change <strong>ANY</strong> client's password</td>
        <td>admin</td>
@@ -160,9 +160,15 @@ JWT_SECRET=&lt;your-secret-key&gt;
        <td>admin</td>
     </tr>
     <tr>
-      <td>PUT</td>
+      <td>PATCH</td>
       <td>/api/ticket/:ticketId</td>
       <td>Admin can update a ticket's status</td>
+      <td>admin</td>
+    </tr>
+    <tr>
+      <td>PATCH</td>
+      <td>/api/auth/ban/:userId</td>
+      <td>Admin can ban a user</td>
       <td>admin</td>
     </tr>
   </tbody>
