@@ -166,9 +166,15 @@ JWT_SECRET=&lt;your-secret-key&gt;
       <td>admin</td>
     </tr>
     <tr>
+      <td>GET</td>
+      <td>/api/auth/admin/all</td>
+      <td>Admin can see all user accounts</td>
+      <td>admin</td>
+    </tr>
+    <tr>
       <td>PATCH</td>
       <td>/api/auth/ban/:userId</td>
-      <td>Admin can ban a user</td>
+      <td>Admin can ban / unban a user</td>
       <td>admin</td>
     </tr>
   </tbody>
