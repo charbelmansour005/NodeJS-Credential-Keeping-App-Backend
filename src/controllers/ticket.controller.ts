@@ -8,7 +8,7 @@ import { getMyTicketsService } from "../services/tickets/shared/getMyTickets.ser
 import { getClientTicketsService } from "../services/tickets/admin/getClientTickets.service.js"
 import { updateClientTicketsService } from "../services/tickets/admin/updateClientTickets.service.js"
 
-const errorFormatter = ({ msg, param, value }: any) => {
+const errorFormatter = ({ value, msg, param, location }: any) => {
   return {
     msg,
   }

@@ -11,18 +11,11 @@ import { ParsedQs } from "qs"
 import { validationResult } from "express-validator"
 import { createError } from "../utils/errorUtils.js"
 
-const errorFormatter = ({ msg, param, value }: any) => {
+const errorFormatter = ({ value, msg, param, location }: any) => {
   return {
     msg,
   }
 }
-
-// Done -> add pagination for getUsercreds
-// Done -> add client support platform
-// Done -> add admin can update any password
-// Todo -> add admin can delete client accounts
-// Todo -> add admin can ban client accounts
-// Todo -> add owner role which can prevent admin accounts from accessing their accounts
 
 const ItemsPerPage = 20
 

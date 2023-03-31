@@ -22,11 +22,7 @@ export async function changePass(
     )
   }
 
-  const user = await User.findOneAndUpdate(
-    { _id: current_user, email: email },
-    { logoutAll: true },
-    { new: true }
-  )
+  const user = await User.findOne({ _id: current_user, email: email })
 
   if (!user) {
     throw createError(
@@ -41,6 +37,12 @@ export async function changePass(
   if (!isEqual) {
     throw createError(401, "Unauthorized", "Old password is incorrent")
   }
+
+  await User.findOneAndUpdate(
+    { _id: current_user, email: email },
+    { logoutAll: true },
+    { new: true }
+  )
 
   const hashedPassword = await hash(newPassword, 12)
 

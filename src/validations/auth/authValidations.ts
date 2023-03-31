@@ -62,6 +62,13 @@ const changePasswordValidations = [
     )
     .notEmpty()
     .withMessage("Password must not be empty"),
+  check("email")
+    .isString()
+    .withMessage("Invalid email format")
+    .isEmail()
+    .withMessage("Invalid email address")
+    .notEmpty()
+    .withMessage("Email address required to change password"),
 ]
 
 export { registerValidations, changePasswordValidations }

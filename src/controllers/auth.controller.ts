@@ -8,7 +8,7 @@ import { updateAnyUserPass } from "../services/auth/admin/updateAnyUserPass.serv
 import { createError } from "../utils/errorUtils.js"
 import { validationResult } from "express-validator"
 
-const errorFormatter = ({ msg, param, value }: any) => {
+const errorFormatter = ({ value, msg, param, location }: any) => {
   return {
     msg,
   }
@@ -72,6 +72,7 @@ export const putRegister: RequestHandler = async (req, res, next) => {
     const errors = validationResult(req).formatWith(errorFormatter)
 
     if (!errors.isEmpty()) {
+      console.log(errors)
       throw createError(
         422,
         "Validation Error",
