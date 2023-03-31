@@ -13,6 +13,7 @@ import {
   getRole,
   updateAnyUserPassword,
   banUserAccounts,
+  getAllUserAccounts,
 } from "../controllers/auth.controller.js"
 
 const router = Router()
@@ -29,6 +30,8 @@ router.get("/whoami", isAuth, getRole)
 
 // * ADMIN
 
+router.get("/admin/all", isAuth, isAdmin, getAllUserAccounts)
+
 router.patch(
   "/admin/changepassword",
   changePasswordValidations,
@@ -37,12 +40,6 @@ router.patch(
   updateAnyUserPassword
 )
 
-router.patch(
-  "/ban/:userId",
-  banUserValidations,
-  isAuth,
-  isAdmin,
-  banUserAccounts
-)
+router.patch("/ban/:userId", isAuth, isAdmin, banUserAccounts)
 
 export default router
