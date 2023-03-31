@@ -35,7 +35,7 @@ export const isAuth: RequestHandler = async (req, res, next) => {
       if (user.isBanned === true) {
         throw createError(
           401,
-          "Unauthenticated",
+          "Banned",
           "You cannot access your account right now."
         )
       }
