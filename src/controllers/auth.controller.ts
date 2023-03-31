@@ -106,7 +106,7 @@ export const getRole: RequestHandler = async (req, res, next) => {
   }
 }
 
-// * ADMIN
+// * Admins
 
 export const updateAnyUserPassword: RequestHandler = async (req, res, next) => {
   try {

@@ -12,6 +12,7 @@ type UserModel = Document & {
   pass_updated_At: Date
   role: string
   isVip: boolean
+  isBanned: boolean
 }
 
 type CredentialModel = Document & {

@@ -36,6 +36,12 @@ const userSchema = new Schema<UserModel>({
     default: false,
   },
 
+  isBanned: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+
   registeredAt: {
     type: Date,
     required: true,
