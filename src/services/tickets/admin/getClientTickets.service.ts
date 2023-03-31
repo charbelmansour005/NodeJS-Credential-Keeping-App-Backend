@@ -5,7 +5,7 @@ export const getClientTicketsService = async (dataSort: string) => {
   const vipTickets = await Tickets.find({ isVip: true }).sort(dataSort)
   const nonVipTickets = await Tickets.find({ isVip: false }).sort(dataSort)
 
-  if (!vipTickets && !nonVipTickets) {
+  if (!vipTickets.length && !nonVipTickets.length) {
     throw createError(
       404,
       "Not found",
