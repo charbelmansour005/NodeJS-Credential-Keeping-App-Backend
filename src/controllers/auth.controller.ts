@@ -8,6 +8,7 @@ import { updateAnyUserPass } from "../services/auth/admin/updateAnyUserPass.serv
 import { createError } from "../utils/errorUtils.js"
 import { validationResult } from "express-validator"
 import { User } from "../models/user.model.js"
+import { banAnyUserService } from "../services/auth/admin/banAnyUser.service.js"
 
 const errorFormatter = ({ value, msg, param, location }: any) => {
   return {
@@ -137,20 +138,72 @@ export const updateAnyUserPassword: RequestHandler = async (req, res, next) => {
 
 export const banUserAccounts: RequestHandler = async (req, res, next) => {
   try {
-    const userId = req.params.userId
-    const user = await User.findById(userId)
+    const errors = validationResult(req).formatWith(errorFormatter)
 
-    if (!user) {
+    if (!errors.isEmpty()) {
       throw createError(
-        404,
-        "User not found",
-        "Make sure you entered the correct ID"
+        422,
+        "Validation Error",
+        errors
+          .array()
+          .map((error) => " " + error.msg)
+          .toString()
+          .trim()
       )
     }
 
-    user.isBanned = true
-    await user.save()
-    res.status(200).json({ message: "User has been banned", details: user })
+    const { userId } = req.params
+
+    const result = await banAnyUserService(userId)
+
+    res.status(200).json(result)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getAllUserAccounts: RequestHandler = async (req, res, next) => {
+  try {
+    const current_user = req.userId
+
+    if (!current_user) {
+      throw createError(401, "Unauth", "Unauth")
+    }
+
+    const pipeline = [
+      { $match: { role: { $in: ["user", "admin"] } } },
+      {
+        $group: {
+          _id: "$role",
+          users: {
+            $push: {
+              _id: "$_id",
+              email: "$email",
+              firstName: "$firstName",
+              lastName: "$lastName",
+              phoneNumber: "$phoneNumber",
+              isBanned: "$isBanned",
+              registeredAt: "$registeredAt",
+              pass_updated_At: "$pass_updated_At",
+              role: "$role",
+            },
+          },
+        },
+      },
+    ]
+
+    const usersByRole = await User.aggregate(pipeline)
+
+    if (!usersByRole.length) {
+      throw createError(404, "Not Found", "We could not find any users")
+    }
+
+    const response = {}
+    usersByRole.forEach((role) => {
+      response[role._id] = role.users
+    })
+
+    res.status(200).json(response)
   } catch (error) {
     next(error)
   }
