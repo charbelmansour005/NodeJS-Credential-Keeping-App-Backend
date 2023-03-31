@@ -17,7 +17,7 @@ const router = Router()
 router
   .route("/ticket")
   .post(ticketValidations, isAuth, createTicket)
-  .get(ticketValidations, isAuth, getMyTickets)
+  .get(isAuth, getMyTickets)
 
 // * admin
 router.get("/tickets/clients", isAuth, isAdmin, getClientTickets)
