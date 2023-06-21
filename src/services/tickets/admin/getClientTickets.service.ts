@@ -15,20 +15,20 @@ export const getClientTicketsService = async (dataSort: string) => {
 
   const response = {
     vip: vipTickets.map((ticket) => ({
-      _id: ticket._id,
-      title: ticket.title,
-      body: ticket.body,
-      createdDate: ticket.createdDate,
-      status: ticket.status,
-      user: ticket.user,
+      _id: ticket?._id,
+      title: ticket?.title,
+      body: ticket?.body,
+      createdDate: ticket?.createdDate,
+      status: ticket?.status,
+      user: ticket?.user,
     })),
     nonVip: nonVipTickets.map((ticket) => ({
-      _id: ticket._id,
-      title: ticket.title,
-      body: ticket.body,
-      createdDate: ticket.createdDate,
-      status: ticket.status,
-      user: ticket.user,
+      _id: ticket?._id,
+      title: ticket?.title,
+      body: ticket?.body,
+      createdDate: ticket?.createdDate,
+      status: ticket?.status,
+      user: ticket?.user,
     })),
   }
 

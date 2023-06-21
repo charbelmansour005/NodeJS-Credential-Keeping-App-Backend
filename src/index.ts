@@ -46,5 +46,10 @@ app.use(
 )
 
 connectMongoDB()
+  .then(() => {})
+  .catch((e) => {
+    console.log(e)
+  })
+
 app.listen(process.env.PORT || PORT)
 console.log(`Listening on port ${process.env.PORT || PORT}`)

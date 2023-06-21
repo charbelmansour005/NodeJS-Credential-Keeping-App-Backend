@@ -30,7 +30,13 @@ export async function login(loginBody: UserModel) {
     throw createError(401, "Invalid Credentials", "Wrong email or password")
   }
 
-  await User.findOneAndUpdate({ email: email }, { logoutAll: false })
+  const pipeline = [
+    {
+      $set: { logoutAll: false },
+    },
+  ]
+
+  await User.updateOne({ email: email }, pipeline)
 
   let loadedUser: unknown | any
   loadedUser = user

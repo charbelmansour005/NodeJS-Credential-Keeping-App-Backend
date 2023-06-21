@@ -44,10 +44,10 @@ const registerValidations = [
     .withMessage("Phone number must not be empty")
     .isLength({ max: 8 })
     .withMessage("Phone number must not exceed 8 numbers"),
-  check("isVip")
-    .isBoolean()
-    .withMessage("isVIP must be a boolean (true or false)")
-    .notEmpty(),
+  // check("isVip")
+  //   .isBoolean()
+  //   .withMessage("isVIP must be a boolean (true or false)")
+  //   .notEmpty(),
 ]
 
 const changePasswordValidations = [
