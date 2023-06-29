@@ -2,18 +2,18 @@
   "name": "nodets",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && npx tsc",
+    "build": "rm -rf dist && yarn tsc",
     "prestart": "npm run build",
     "start": "node dist/index.js",
     "preserve": "npm run build",
     "serve": "concurrently \"npx tsc -w\" \"nodemon dist/index.js\""
   },
   "keywords": [],
-  "author": "",
+  "author": "charbelMansourDev <130573508+charbelMansourDev@users.noreply.github.com>",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.15.7",
@@ -42,5 +42,6 @@
     "qs": "^6.11.1",
     "rimraf": "^4.4.1",
     "uuid": "^9.0.0"
-  }
+  },
+  "repository": "https://github.com/charbelmansour005/NodeJS-Credential-Keeping-App-Backend.git"
 }
