@@ -9,7 +9,10 @@ export async function getRoleService(authHeader: string) {
   }
   const access_token = authHeader.split(" ")[1]
   let decodedToken: string | JwtPayload
-  decodedToken = verify(access_token, process.env.SECRET as string) as {
+  decodedToken = verify(
+    access_token,
+    "f329duwoefawf#$%DVSTBGtvhwgcdf" as string
+  ) as {
     role: string
   }
   if (!decodedToken) {

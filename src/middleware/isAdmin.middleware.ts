@@ -14,7 +14,10 @@ export const isAdmin: RequestHandler = (req, res, next) => {
 
     let decodedToken: string | JwtPayload
 
-    decodedToken = verify(access_token, process.env.SECRET as string) as {
+    decodedToken = verify(
+      access_token,
+      "f329duwoefawf#$%DVSTBGtvhwgcdf" as string
+    ) as {
       userId: string
       role: string
     }

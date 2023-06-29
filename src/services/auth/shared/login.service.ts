@@ -47,7 +47,7 @@ export async function login(loginBody: UserModel) {
       userId: loadedUser._id.toString(),
       role: loadedUser.role.toString(),
     },
-    process.env.SECRET,
+    "f329duwoefawf#$%DVSTBGtvhwgcdf",
     { expiresIn: "1h" }
   )
 

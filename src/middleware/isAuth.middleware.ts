@@ -16,7 +16,10 @@ export const isAuth: RequestHandler = async (req, res, next) => {
     let decodedToken: string | JwtPayload
 
     try {
-      decodedToken = verify(access_token, process.env.SECRET as string) as {
+      decodedToken = verify(
+        access_token,
+        "f329duwoefawf#$%DVSTBGtvhwgcdf" as string
+      ) as {
         userId: string
         role: string
         isBanned: boolean
