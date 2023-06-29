@@ -7,7 +7,7 @@ const limiter = rateLimit({
   windowMs: 1 * 60 * 1000,
   max: 5,
 })
-
+//test
 const router = Router()
 
 router.post("/generatepassword", isAuth, limiter, requestPassword)
