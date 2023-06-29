@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && yarn tsc",
+    "build": "rm -rf dist && yarn run tsc",
     "prestart": "npm run build",
     "start": "node dist/index.js",
     "preserve": "npm run build",
