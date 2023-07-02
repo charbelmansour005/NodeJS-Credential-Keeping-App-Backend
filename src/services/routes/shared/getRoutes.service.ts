@@ -2,7 +2,7 @@ import { Routes } from "../../../models/routes.model.js"
 import { createError } from "../../../utils/errorUtils.js"
 
 export const getRoutes = async () => {
-  const routes = await Routes.find()
+  const routes = await Routes.find().select("-__v")
 
   if (routes.length === 0) {
     throw createError(
@@ -12,7 +12,5 @@ export const getRoutes = async () => {
     )
   }
 
-  return {
-    routes,
-  }
+  return routes
 }
