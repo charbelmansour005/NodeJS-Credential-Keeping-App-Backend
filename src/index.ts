@@ -13,6 +13,7 @@ import authRoutes from "./routes/auth.routes.js"
 import credRoutes from "./routes/credentials.routes.js"
 import passGeneratorRoutes from "./routes/passGenerator.routes.js"
 import ticketRoutes from "./routes/ticket.routes.js"
+import frontendRoutes from "./routes/frontend.routes.js"
 import { connectMongoDB } from "./db/mongoose.db.js"
 var PORT = 5400
 
@@ -31,6 +32,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api", credRoutes)
 app.use("/api", passGeneratorRoutes)
 app.use("/api", ticketRoutes)
+app.use("/api", frontendRoutes)
 
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({ message: "Could not find Endpoint!" })

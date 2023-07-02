@@ -2,7 +2,7 @@ import { createError } from "../../../utils/errorUtils.js"
 import { Tickets } from "../../../models/ticket.model.js"
 
 const ItemsPerPage = 20
-1
+
 export async function getMyTicketsService(
   pageNumber: number,
   dataSort: string,

@@ -41,5 +41,10 @@ type TicketModel = Document & {
   user?: any
 }
 
-export type { UserModel, CredentialModel, TicketModel }
+type RouteModel = Document & {
+  path: string
+  enabled: boolean
+}
+
+export type { UserModel, CredentialModel, TicketModel, RouteModel }
 export { Status }
